@@ -71,7 +71,7 @@ function Authentication() {
 
       async function handlesignin(){
         try {
-          const response = await axios.get('https://c-suite-academy.onrender.com/check', {
+          const response = await axios.get('https://sunshine-1.onrender.com/check', {
             params: {
               email: loginemail,
             },});
@@ -94,14 +94,14 @@ function Authentication() {
       async function handlesignup(){
         let data =  {name:name, email:email, password:password };
         try {
-          const response = await axios.get('https://c-suite-academy.onrender.com/check', {
+          const response = await axios.get('https://sunshine-1.onrender.com/check', {
             params: {
               email: email,
             },});
           console.log(response.data);
           if(response.data=="null"){
             try {
-              const response = await axios.post('https://c-suite-academy.onrender.com/signup', data, {
+              const response = await axios.post('https://sunshine-1.onrender.com/signup', data, {
                 headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
               });
               console.log(response.data);
