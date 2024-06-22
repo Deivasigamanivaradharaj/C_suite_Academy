@@ -19,7 +19,6 @@ const Assessmentsstart = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [timeLeft, setTimeLeft] = useState(23 * 60 + 46); // 23 minutes and 46 seconds
-  const [selectedUser, setSelectedUser] = useState('Deivasigamani');
   const [selectedUserDropdown, setSelectedUserDropdown] = useState(1);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [bookmarkedQuestions, setBookmarkedQuestions] = useState({});
@@ -59,10 +58,6 @@ const Assessmentsstart = () => {
       ...selectedOptions,
       [`${currentSectionIndex}-${currentQuestionIndex}`]: event.target.value,
     });
-  };
-
-  const handleSelectChangeone = (event) => {
-    setSelectedUser(event.target.value);
   };
 
   const handleSelectChange = (event) => {
@@ -137,7 +132,7 @@ const Assessmentsstart = () => {
       total += sections[index].questions.length;
     }
     settotalQuestions(total)
-  },[])
+  },[sections])
   const answeredCount = Object.keys(selectedOptions).length;
   const bookmarkedCount = Object.keys(bookmarkedQuestions).length;
   const notAnsweredCount = totalQuestions - answeredCount;
@@ -271,7 +266,7 @@ const Assessmentsstart = () => {
                   <button className='button-next' onClick={() => handleNavigation('next')} disabled={currentQuestionIndex === currentSectionQuestions.length - 1}>
                     Next
                   </button>
-                  <button className='button-bookmark' onClick={handleBookmark}>{`${bookmarkedQuestions[`${currentSectionIndex}-${currentQuestionIndex}`]=="true"? 'Bookmarked' : 'Bookmark'}`}</button>
+                  <button className='button-bookmark' onClick={handleBookmark}>{`${bookmarkedQuestions[`${currentSectionIndex}-${currentQuestionIndex}`]==="true"? 'Bookmarked' : 'Bookmark'}`}</button>
                 </div>
 
                 {isCurrentSectionCompleted && currentSectionIndex < sections.length - 1 && (
@@ -307,7 +302,7 @@ const Assessmentsstart = () => {
                         onClick={() => setCurrentQuestionIndex(quesIndex)}
                       >
                         {/* {`${(quesIndex + 1).toString().padStart(2, '0')}`} <FontAwesomeIcon icon={faCheckCircle} style={{color:`${!selectedOptions[`${currentSectionIndex}-${quesIndex}`] && bookmarkedQuestions[`${currentSectionIndex}-${quesIndex}`]=="true"? 'orange' : ''}`}}  size='1rem'className='icon-check pl-4' /> */}
-                        {`${(quesIndex + 1).toString().padStart(2, '0')}`}<FontAwesomeIcon icon={faCheckCircle} size='1rem'className={`icon-check pl-4 ${bookmarkedQuestions[`${currentSectionIndex}-${quesIndex}`]=="true"? 'bookmarked' : ''}`} />
+                        {`${(quesIndex + 1).toString().padStart(2, '0')}`}<FontAwesomeIcon icon={faCheckCircle} size='1rem'className={`icon-check pl-4 ${bookmarkedQuestions[`${currentSectionIndex}-${quesIndex}`]==="true"? 'bookmarked' : ''}`} />
                       </button>
                     ))}
                   </div>
