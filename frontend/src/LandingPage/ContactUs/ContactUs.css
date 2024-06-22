@@ -1,0 +1,106 @@
+.ContactUs{
+    height: 80vh;
+    width: 100%;
+    background: linear-gradient(90deg, #303D96 0%, #56ABE3 100%);
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.ContactUs .leftcontainer{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    color: white;
+    padding: 10% 5%;
+    gap: 10px;
+}
+.ContactUs .leftcontainer h1{
+    font-size: 50px;
+    font-weight: 600px;
+}
+
+.ContactUs .rightcontainer{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    padding: 5%;
+}
+
+.ContactUs .rightcontainer form{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+}
+.ContactUs .rightcontainer form label{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: white;
+}
+.ContactUs .rightcontainer form input{
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    outline: none;
+}
+.ContactUs .rightcontainer form textarea{
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    outline: none;
+    height: 100px;
+    width: 100%;
+}
+.ContactUs .rightcontainer form .rows{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.ContactUs .rightcontainer form .inputgroup{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+.ContactUs .rightcontainer form .messagegroup{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.ContactUs .rightcontainer form .submit{
+    width: max-content;
+    padding: 5px 20px;
+}
+
+@media (max-width: 1125px) {
+    .ContactUs .leftcontainer{
+        width: 35%;
+    }
+    .ContactUs .rightcontainer {
+        width: 55%;
+    }
+}
+@media (max-width: 835px) {
+    .ContactUs{
+        flex-direction: column;
+        height: max-content;
+    }
+    .ContactUs .leftcontainer{
+        width: 100%;
+    }
+    .ContactUs .rightcontainer {
+        width: 100%;
+    }
+}
+
+@media (max-width: 835px) {
+    .ContactUs .rightcontainer form .rows{
+        flex-direction: column;
+    }
+    .ContactUs .rightcontainer form .rows .inputgroup{
+        width: 100%;
+    }
+}
