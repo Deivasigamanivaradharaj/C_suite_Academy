@@ -27,6 +27,7 @@ import Assessmentsstart from './Assessments/Assessmentsstart/Assessmentsstart'
 import Authentication from './Authentication/Authentication';
 
 import Pricing from './PaymentPage/Pricing';
+import Dashboard from './Dashboard/Dashboard';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/assessment-page" element={<Assessmentsstart/>}/>
           <Route path="/finish-assessment" element={<Closelevel/>}/>
           <Route path='/payment' element={<Pricing></Pricing>}></Route>
+          <Route path='/dashboard' element={<Dashboard/>}></Route>
       </Routes>
      </Router>  
     </div>
