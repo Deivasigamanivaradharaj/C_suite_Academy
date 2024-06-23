@@ -3,6 +3,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faBell } from '@fortawesome/free-solid-svg-icons';
 import './TopBar.css';
+import dp from '../../Assets/user-avatar1.png'
 
 const TopBar = () => {
   return (
@@ -12,7 +13,7 @@ const TopBar = () => {
         <input type="text" placeholder="Search for class, task, etc." />
       </div>
       <div className="user-info">
-        <img src={"./images/user-avatar1.png"} alt="User Avatar" className="user-avatar" />
+        <img src={dp} alt="User Avatar" className="user-avatar" />
         <div className="user-text">
           <span className="welcome-text">Welcome back</span>
           <span className="user-name">Robert Fox</span>

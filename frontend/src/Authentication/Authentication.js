@@ -85,6 +85,9 @@ function Authentication() {
                 navigate("../quick-assessment");
               }, 5000);
             }
+            else{
+              toast.error("Check Your Password!");
+            }
           }
         } catch (error) {
           console.error(error); // Handle errors
