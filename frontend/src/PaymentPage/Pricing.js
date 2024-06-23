@@ -8,9 +8,9 @@ import axios from 'axios';
 
 const PricingPlans = () => {
 
-  const makepayment = async () => {
+  const makepayment = async (name, price) => {
     const stripe = await loadStripe("pk_test_51PUVZZRrG0ZkGYrr3y8s7r35TsoywTtRefCFB64KvnZNuuU2kotNOBp8AOZMPfyejU5Ah1DG4vXjwyig9AZXFmNv00Etljhki6");
-    let data = {name:"Premium", price:"1999"}
+    let data = {name:name, price:price}
 
     const response = await axios.post("https://sunshine-1.onrender.com/create-checkout-session",data, {
       headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
@@ -58,7 +58,10 @@ const PricingPlans = () => {
                   <li><span className="fa-li"><LuSparkle style={{ fill: 'rgba(239, 151, 19, 1)', color:'rgba(239, 151, 19, 1)'}} /> Up to 1GB file size</span></li>
                   <li><span className="fa-li"><LuSparkle style={{ fill: 'rgba(239, 151, 19, 1)', color:'rgba(239, 151, 19, 1)'}} /> Up to 5 projects</span></li>
                 </ul>
-                <button type='button' className="plan-button mt-auto">Get Plan</button>
+                <button type='button' onClick={(e)=>{
+                  e.preventDefault();
+                  makepayment("Basic", "499")
+                }} className="plan-button mt-auto">Get Plan</button>
               </div>
             </div>
           </div>
@@ -74,7 +77,10 @@ const PricingPlans = () => {
                   <li><span className="fa-li"><LuSparkle style={{ fill: 'rgba(239, 151, 19, 1)', color:'rgba(239, 151, 19, 1)'}} /> Up to 1GB file size</span></li>
                   <li><span className="fa-li"><LuSparkle style={{ fill: 'rgba(239, 151, 19, 1)', color:'rgba(239, 151, 19, 1)'}} /> Up to 5 projects</span></li>
                 </ul>
-                <button type='button' className="plan-button mt-auto">Get Plan</button>
+                <button type='button' onClick={(e)=>{
+                  e.preventDefault();
+                  makepayment("Standard", "999")
+                }} className="plan-button mt-auto">Get Plan</button>
               </div>
             </div>
           </div>
@@ -92,7 +98,7 @@ const PricingPlans = () => {
                 </ul>
                 <button type='button' onClick={(e)=>{
                   e.preventDefault();
-                  makepayment()
+                  makepayment("Premium", "1999")
                 }} className="plan-button mt-auto">Get Plan</button>
               </div>
             </div>
