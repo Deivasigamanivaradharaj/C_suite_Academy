@@ -155,19 +155,19 @@ const Management = () => {
       <div className="container-read">
         <div className="buttons-all">
           <button data-aos="fade-right" className="txt-access" onClick={() => handleButtonClick("Assessment")}>
-            <MdOutlineAssessment className="text-primary-color mr-2" size="1.5rem" />
+            <MdOutlineAssessment style={{marginTop:"0px"}} className="text-primary-color mr-2" size="1.5rem" />
             <span>Assessment</span>
           </button>
           <button data-aos="fade-right" className="txt-access" onClick={() => handleButtonClick("Subscribe")}>
-            <MdOutlineUnsubscribe className="text-primary-color mr-2" size="1.5rem" />
+            <MdOutlineUnsubscribe style={{marginTop:"0px"}} className="text-primary-color mr-2" size="1.5rem" />
             <span>Subscribe</span>
           </button>
           <button data-aos="fade-left" className="txt-access" onClick={() => handleButtonClick("Dashboard")}>
-            <MdDashboard className="text-primary-color mr-2" size="1.5rem" />
+            <MdDashboard style={{marginTop:"0px"}} className="text-primary-color mr-2" size="1.5rem" />
             <span>Dashboard</span>
           </button>
           <button data-aos="fade-left" className="txt-access" onClick={() => handleButtonClick("Learning")}>
-            <LiaUniversitySolid className="text-primary-color mr-2" size="1.5rem" />
+            <LiaUniversitySolid style={{marginTop:"0px"}} className="text-primary-color mr-2" size="1.5rem" />
             <span>Learning</span>
           </button>
         </div>
