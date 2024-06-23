@@ -27,7 +27,11 @@ import Assessmentsstart from './Assessments/Assessmentsstart/Assessmentsstart'
 import Authentication from './Authentication/Authentication';
 
 import Pricing from './PaymentPage/Pricing';
+
 import Dashboard from './Dashboard/Dashboard';
+import Home from './Dashboard/Components/Home/Home';
+import Courses from './Dashboard/Components/Courses/Courses';
+import Profile from './Dashboard/Components/Profile/Profile';
 
 function App() {
   return (
@@ -40,7 +44,11 @@ function App() {
           <Route path="/assessment-page" element={<Assessmentsstart/>}/>
           <Route path="/finish-assessment" element={<Closelevel/>}/>
           <Route path='/payment' element={<Pricing></Pricing>}></Route>
-          <Route path='/dashboard' element={<Dashboard/>}></Route>
+          <Route path='/home' element={<Dashboard/>}>
+            <Route path='' index element={<Home/>}></Route>
+            <Route path='profile' index element={<Profile/>}></Route>
+            <Route path='courses' index element={<Courses/>}></Route>
+          </Route>
       </Routes>
      </Router>  
     </div>

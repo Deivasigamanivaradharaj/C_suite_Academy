@@ -1,106 +1,226 @@
-.ContactUs{
+.ContactUs {
     height: 80vh;
     width: 100%;
-    background: linear-gradient(90deg, #303D96 0%, #56ABE3 100%);
+    background: #795ad1;
     display: flex;
+    cursor: default;
     justify-content: space-evenly;
-}
-
-.ContactUs .leftcontainer{
+    background-image: url("../Assets/contactUsSVG.svg");
+    background-size: auto;
+    background-position-x: calc(100% + 380px);
+    background-position-y: calc(100% + 150px);
+    background-repeat: no-repeat;
+  }
+  
+  .ContactUs .leftcontainer {
     display: flex;
     flex-direction: column;
     width: 45%;
     height: 100%;
+    justify-content: space-evenly;
     color: white;
-    padding: 10% 5%;
+    padding: 0% 2.5%;
     gap: 10px;
-}
-.ContactUs .leftcontainer h1{
-    font-size: 50px;
+  }
+  
+  .ContactUs .leftcontainer h1 {
+    font-size: 40px;
     font-weight: 600px;
-}
-
-.ContactUs .rightcontainer{
+  }
+  
+  .ContactUs .leftcontainer p {
+    font-size: 15px;
+  }
+  
+  .ContactUs .leftcontainer .leftRow .phone,
+  .ContactUs .leftcontainer .leftRow .mail,
+  .ContactUs .leftcontainer .leftRow .location {
+    display: flex;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    width: max-content;
+    align-items: center;
+    margin: 10px 0;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all;
+    transition-duration: 250ms;
+    border: 1.5px solid transparent;
+  }
+  
+  .ContactUs .leftcontainer .leftRow .phone:hover,
+  .ContactUs .leftcontainer .leftRow .mail:hover,
+  .ContactUs .leftcontainer .leftRow .location:hover {
+    border: 1.5px solid white;
+    text-decoration: none;
+    scale: 1.02;
+  }
+  
+  .ContactUs .leftcontainer .leftRow:last-child {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .ContactUs .leftcontainer .leftRow:last-child a {
+    font-size: 20px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    transition: all;
+    transition-duration: 250ms;
+    transform: translateY(0px);
+  }
+  
+  .ContactUs .leftcontainer .leftRow:last-child a:hover {
+    background-color: black;
+    color: white;
+    transform: translateY(-3px);
+  }
+  
+  .ContactUs .rightcontainer {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 45%;
     height: 100%;
-    padding: 5%;
-}
-
-.ContactUs .rightcontainer form{
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    width: 100%;
-}
-.ContactUs .rightcontainer form label{
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 30px;
+    justify-content: center;
     color: white;
-}
-.ContactUs .rightcontainer form input{
-    border-radius: 10px;
-    border: none;
-    padding: 10px;
-    outline: none;
-}
-.ContactUs .rightcontainer form textarea{
-    border-radius: 10px;
-    border: none;
-    padding: 10px;
-    outline: none;
-    height: 100px;
-    width: 100%;
-}
-.ContactUs .rightcontainer form .rows{
+  }
+  
+  .ContactUs .rightcontainer .rightContainerBox {
+    background-color: white;
+    color: #7247ea;
+    padding: 5%;
+    border-radius: 18px;
+    gap: 15px;
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-}
-
-.ContactUs .rightcontainer form .inputgroup{
-    display: flex;
+    font-size: 15px;
     flex-direction: column;
-    width: 45%;
-}
-.ContactUs .rightcontainer form .messagegroup{
+  }
+  
+  .ContactUs .rightcontainer .rightContainerBox h6 {
+    font-size: 22px;
+    text-align: center;
+  }
+  
+  .ContactUs .rightcontainer .rows {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 20px;
+  }
+  
+  .ContactUs .rightcontainer .inputgroup {
     display: flex;
     flex-direction: column;
     width: 100%;
-}
-.ContactUs .rightcontainer form .submit{
-    width: max-content;
-    padding: 5px 20px;
-}
-
-@media (max-width: 1125px) {
-    .ContactUs .leftcontainer{
-        width: 35%;
+  }
+  
+  .ContactUs .rightcontainer .inputgroup input,
+  .ContactUs .rightcontainer .messagegroup textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.25px solid #795ad1;
+    outline: none;
+  }
+  
+  .ContactUs .rightcontainer .messagegroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+  
+  .ContactUs .rightcontainer .messagegroup label,
+  .ContactUs .rightcontainer .inputgroup label {
+    margin-bottom: 0px;
+    font-size: 13px;
+  }
+  
+  .ContactUs .rightcontainer .messagegroup textarea {
+    resize: vertical;
+    min-height: 130px;
+    max-height: 180px;
+  }
+  
+  .ContactUs .rightcontainer .submit {
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+  }
+  
+  .ContactUs .rightcontainer .submit input {
+    padding: 10px 20px;
+    background-color: #795ad1;
+    border: none;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 250ms;
+  }
+  
+  .ContactUs .rightcontainer .submit input:hover {
+    opacity: 0.7;
+  }
+  
+  @media (max-width: 1125px) {
+    .ContactUs {
+      padding: 20px 0;
+      height: auto;
+      background-size: contain;
     }
+  
+    .ContactUs .leftcontainer,
     .ContactUs .rightcontainer {
-        width: 55%;
+      width: 100%;
+      padding: 0 2.5%;
+      margin: 10px 0;
     }
-}
-@media (max-width: 835px) {
-    .ContactUs{
-        flex-direction: column;
-        height: max-content;
+  
+    .ContactUs .rightcontainer .rightContainerBox {
+      padding: 5%;
+      width: 100%;
     }
-    .ContactUs .leftcontainer{
-        width: 100%;
+  
+    .ContactUs .rightcontainer .messagegroup textarea {
+      resize: vertical;
+      min-height: 100px;
+      max-height: 150px;
     }
+  
+    .ContactUs .rightcontainer .rows {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 835px) {
+    .ContactUs {
+      flex-direction: column;
+      padding: 20px 0;
+      height: auto;
+      background-size: auto;
+    }
+  
+    .ContactUs .leftcontainer,
     .ContactUs .rightcontainer {
-        width: 100%;
+      width: 100%;
+      padding: 0 5%;
+      margin-bottom: 20px;
     }
-}
-
-@media (max-width: 835px) {
-    .ContactUs .rightcontainer form .rows{
-        flex-direction: column;
+  
+    .ContactUs .rightcontainer .rightContainerBox {
+      padding: 5%;
     }
-    .ContactUs .rightcontainer form .rows .inputgroup{
-        width: 100%;
+  
+    .ContactUs .rightcontainer .rows {
+      flex-direction: column;
     }
-}
+  }
