@@ -90,14 +90,14 @@ const SignUp = ({ toggleSlide }) => {
       // }
       let data =  {name:form?.name, email:form?.email, linkedin:form?.LinkedIn, password:form?.password };
       try {
-        const response = await axios.get('http://localhost:3030/check', {
+        const response = await axios.get('https://c-suite-academy-2.onrender.com/check', {
           params: {
             email: form?.email,
           },});
         console.log(response.data);
         if(response.data=="null"){
           try {
-            const response = await axios.post('http://localhost:3030/signup', data, {
+            const response = await axios.post('https://c-suite-academy-2.onrender.com/signup', data, {
               headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
             });
             console.log(response.data);

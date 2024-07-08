@@ -68,7 +68,7 @@ const Login = ({ toggleSlide }) => {
     //   toast.error("Login Failed");
     // }
     try {
-      const response = await axios.get('http://localhost:3030/check', {
+      const response = await axios.get('https://c-suite-academy-2.onrender.com/check', {
         params: {
           email: form.email,
         },});
