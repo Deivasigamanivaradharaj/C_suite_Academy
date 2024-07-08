@@ -37,6 +37,13 @@ import CourseDetails from "./Dashboard/Components/CourseDetails/CourseDetails";
 import Enrolled from "./Dashboard/Components/Enrolled/Enrolled";
 import TestPage from "./Dashboard/Components/TestPage/TestPage";
 
+import AllCourses from './Admin/components/courses/AllCourses';
+import AddnewCourse from './Admin/components/courses/new-course/AddnewCourse';
+import EditCourse from './Admin/components/courses/edit-course/EditCourse';
+import Allusers from './Admin/components/userManagement/Allusers';
+import PurchasesPage from './Admin/components/purchases/PurchasesPage';
+
+
 
 import { ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -77,6 +84,11 @@ function App() {
               element={<CourseDetails />}
             ></Route>
           </Route>
+          <Route path='/admin' element={<AllCourses/>}/>
+          <Route path="/admin/Courses/new" element={<AddnewCourse />} />
+          <Route path="/admin/Course/edit" element={<EditCourse />} />
+          <Route path="/admin/users" element={<Allusers />} />
+          <Route path="/admin/purchases" element={<PurchasesPage />} />
       </Routes>
      </Router>  
     </div>

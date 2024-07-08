@@ -1,0 +1,334 @@
+.users-page-dashboard {
+  display: grid;
+  width: 100%;
+  height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.users-page-dashboard p, .users-page-dashboard h1, .users-page-dashboard h2, .users-page-dashboard h3, .users-page-dashboard h4, .users-page-dashboard h5, .users-page-dashboard h6{
+  margin: 0px;
+  padding: 0px;
+}
+
+.users-page-dashboard .user-page {
+  position: relative;
+  width: calc(100% - 200px);
+  padding: 3rem 4rem 0 4rem;
+  justify-self: end;
+  height: 100vh;
+}
+
+.users-page-dashboard .users-page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #8949ff;
+}
+
+.users-page-dashboard .users-list-header {
+  width: 100%;
+  height: 2.2rem;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.users-page-dashboard .users-header-actions-cnt {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.users-page-dashboard .search-user-cnt {
+  width: 70%;
+  height: 100%;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #8949ffbf;
+  padding: 0.5rem;
+}
+
+.users-page-dashboard .search-icon {
+  width: 1.5rem;
+  height: 90%;
+  object-fit: contain;
+}
+
+.users-page-dashboard .search-input {
+  width: 90%;
+  height: 100%;
+  outline: none;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #383838;
+}
+
+.users-page-dashboard .add-new-btn {
+  min-width: 7rem;
+  height: 100%;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: white;
+  background: #8949ff;
+  padding: 0 1rem 0 0.5rem;
+  cursor: pointer;
+}
+.users-page-dashboard .add-icon {
+  height: 40%;
+}
+
+.users-page-dashboard .users-list-cnt {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  gap: 1.5rem;
+  overflow-y: scroll;
+  padding-top: 3rem;
+}
+
+.users-page-dashboard .users-details-header {
+  position: absolute;
+  width: 100%;
+  height: 2rem;
+  background: rgba(242, 242, 242, 0.625);
+  border-radius: 0.5rem;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.users-page-dashboard .users-details-header p {
+  font-weight: 500;
+  color: #6f6f6f;
+}
+
+.users-page-dashboard .user-details-cnt {
+  width: 100%;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid gainsboro;
+  padding-top: 1rem;
+}
+
+.users-page-dashboard .user-name-cnt {
+  width: 25%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.users-page-dashboard .user-date-cnt {
+  width: 15%;
+}
+.users-page-dashboard .profile-img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.users-page-dashboard .name-cnt h3 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.users-page-dashboard .name-cnt p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgb(93, 93, 93);
+}
+
+.users-page-dashboard .details-text {
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgb(150, 150, 150);
+}
+
+.users-page-dashboard .more-icon {
+  width: 1rem;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.users-page-dashboard .add-new-user-cover {
+  position: absolute;
+  width: calc(100% - 200px);
+  height: 100%;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00000060;
+  z-index: 10;
+}
+
+.users-page-dashboard .add-new-user-cnt {
+  width: 50%;
+  min-height: 50%;
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.users-page-dashboard .user-details-from {
+  width: 100%;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.users-page-dashboard .user-input {
+  width: 15rem;
+}
+
+.users-page-dashboard .bottom-btn-cnt {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+}
+
+.users-page-dashboard .edit-user-cnt {
+  position: absolute;
+  top: 1rem;
+  right: -28rem;
+  width: 25rem;
+  height: 90%;
+  border-radius: 1rem;
+  padding: 2rem;
+  background: #f4f4f4;
+  box-shadow: 1px 1px 12px 2px rgb(212, 212, 212);
+  transition: all 200ms ease-in-out;
+  z-index: 1;
+}
+
+.users-page-dashboard .profile-details-cnt {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.users-page-dashboard .profile-details-img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.users-page-dashboard .user-ofiicial-details-cnt {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.users-page-dashboard .ofiicial-detail {
+  min-width: 30%;
+}
+
+.users-page-dashboard .courses-history {
+  position: relative;
+  padding-top: 2rem;
+  width: 100%;
+  height: 15rem;
+  margin-top: 1.5rem;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.users-page-dashboard .courses-history-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #dddddd;
+  padding: 0 1rem;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  color: #6f6f6f;
+}
+
+.users-page-dashboard .courses-history-content {
+  position: relative;
+  background: #efefef;
+}
+.users-page-dashboard .courses-history-content h5 {
+  font-weight: 400;
+}
+.users-page-dashboard .courses-history-content h6 {
+  padding: 2px 5px;
+  font-weight: 400;
+  font-size: 0.8rem;
+  border-radius: 0.5rem;
+  background: rgb(189, 251, 189);
+}
+
+.users-page-dashboard .action-btn-cnt {
+  position: absolute;
+  top: -1rem;
+  right: -1.8rem;
+  width: 3rem;
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  /* background: #8949ff; */
+  background: white;
+  border-radius: 1rem 0.2rem 0.2rem 1rem;
+}
+
+.users-page-dashboard .action-img {
+  width: 80%;
+  height: 30%;
+  padding: 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  object-fit: contain;
+  cursor: pointer;
+
+  .users-page-dashboard &:hover {
+    background: #f0f0f0;
+  }
+}
+
+.users-page-dashboard .file-input-hide{
+    opacity: 0;
+}
+
+.users-page-dashboard .file-upload {
+    position: absolute;
+    top: 1rem;
+    left: 2.5rem;
+}
