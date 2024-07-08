@@ -5,26 +5,35 @@ import { GoRocket } from "react-icons/go";
 
 import {loadStripe} from '@stripe/stripe-js';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const PricingPlans = () => {
 
+  let navigate = useNavigate();
+
   const makepayment = async (name, price) => {
-    const stripe = await loadStripe("pk_test_51PUVZZRrG0ZkGYrr3y8s7r35TsoywTtRefCFB64KvnZNuuU2kotNOBp8AOZMPfyejU5Ah1DG4vXjwyig9AZXFmNv00Etljhki6");
-    let data = {name:name, price:price}
+    if(localStorage.getItem("isloggedin")==="true")
+    {
+      const stripe = await loadStripe("pk_test_51PUVZZRrG0ZkGYrr3y8s7r35TsoywTtRefCFB64KvnZNuuU2kotNOBp8AOZMPfyejU5Ah1DG4vXjwyig9AZXFmNv00Etljhki6");
+      let data = {name:name, price:price}
 
-    const response = await axios.post("https://sunshine-1.onrender.com/create-checkout-session",data, {
-      headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
-    })
+      const response = await axios.post("https://sunshine-1.onrender.com/create-checkout-session",data, {
+        headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
+      })
 
-    console.log(response);
+      console.log(response);
       
-    const result = stripe.redirectToCheckout({
-      sessionId:response.data.id
+      const result = stripe.redirectToCheckout({
+        sessionId:response.data.id
       });
     
-    if (result.error) {
-      console.log(result.error);
+      if (result.error) {
+        console.log(result.error);
       }
+    }
+    else{
+      navigate("../Authentication");
+    }
   }
 
   return (

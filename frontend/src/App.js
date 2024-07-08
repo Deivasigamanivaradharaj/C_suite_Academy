@@ -32,22 +32,50 @@ import Dashboard from './Dashboard/Dashboard';
 import Home from './Dashboard/Components/Home/Home';
 import Courses from './Dashboard/Components/Courses/Courses';
 import Profile from './Dashboard/Components/Profile/Profile';
+import CourseContent from "./Dashboard/Components/CourseContent/CourseContent";
+import CourseDetails from "./Dashboard/Components/CourseDetails/CourseDetails";
+import Enrolled from "./Dashboard/Components/Enrolled/Enrolled";
+import TestPage from "./Dashboard/Components/TestPage/TestPage";
+
+
+import { ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Auth from './Auth/components/auth/Auth';
+import ResetPage from './Auth/components/auth/ResetPage';
+import LinkedInAuth from './Auth/components/auth/LinkedInAuth';
+import AuthContainer from './Auth';
 
 function App() {
   return (
     <div style={{width:"100vw", overflow:"hidden"}}>
       <Router>
+        <ToastContainer />
         <Routes>
           <Route path="/" element={[<Landingpage/>,<Management/>,<Brands/>,<Success/>,<Engage/>,<Partners/>,<FindPricing/>,<ContactUs/>,<Footer/>]}/>
-          <Route path="/authentication" element={<Authentication></Authentication>}></Route>
+          <Route path='/authentication' element={<Auth />}/>
+          <Route path="reset-password" element={<ResetPage />} />
+          <Route path="auth-linkedin-bridge" element={<LinkedInAuth />} />
+          {/* <Route path="/authentication" element={<Authentication></Authentication>}></Route> */}
           <Route path="/quick-assessment" element={<Entrylevel/>}/>
           <Route path="/assessment-page" element={<Assessmentsstart/>}/>
           <Route path="/finish-assessment" element={<Closelevel/>}/>
           <Route path='/payment' element={<Pricing></Pricing>}></Route>
           <Route path='/home' element={<Dashboard/>}>
             <Route path='' index element={<Home/>}></Route>
-            <Route path='profile' index element={<Profile/>}></Route>
-            <Route path='courses' index element={<Courses/>}></Route>
+            <Route path="courses" index element={<Courses />}></Route>
+            <Route path="profile" index element={<Profile />}></Route>
+            <Route path="enrolled" index element={<Enrolled />}></Route>
+            <Route path="test/:lessonId" index element={<TestPage />} />
+            <Route
+              path="courseContent"
+              index
+              element={<CourseContent />}
+            ></Route>
+            <Route
+              path="courseDetails"
+              index
+              element={<CourseDetails />}
+            ></Route>
           </Route>
       </Routes>
      </Router>  

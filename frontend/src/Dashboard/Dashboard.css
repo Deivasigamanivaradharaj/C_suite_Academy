@@ -1,4 +1,16 @@
 .Dashboard {
+  display: flex;
+  color: #333;
+}
+
+.sidebarBox {
+  width: 80px;
+}
+
+.outletBox {
+  flex: 1;
+}
+/* .Dashboard {
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -15,8 +27,7 @@
     border-radius: 50px;
     background-color: #fff;
     width: 80%;
-    /* margin-top: 20px; */
-  }
+  } */
   
   .header-part{
     display: flex;

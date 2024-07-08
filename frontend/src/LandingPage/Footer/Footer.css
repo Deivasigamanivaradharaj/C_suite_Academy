@@ -1,6 +1,6 @@
 .footer{
-    height:60vh;
-    padding: 5%;
+    height:max-content;
+    padding: 2%;
     width: 100%;
     display: flex;
     justify-content: space-evenly;

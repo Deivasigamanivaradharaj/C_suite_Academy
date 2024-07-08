@@ -26,7 +26,7 @@ app.get('/check', (req,res)=>{
         await client.connect();
   
           const db = client.db("C-suite");
-          const col = db.collection("users");
+          const col = db.collection("Users");
   
           const filter = { "email": req.query.email };
           col.findOne(filter).then((document)=>{
@@ -40,6 +40,26 @@ app.get('/check', (req,res)=>{
     
   })
 
+app.get('/fetchela', (req,res)=>{
+
+  async function fetch(){
+    try{
+      await client.connect();
+
+        const db = client.db("C-suite");
+        const col = db.collection("ELA");
+
+        col.findOne().then((document)=>{
+        res.json(JSON.stringify(document));
+  })
+    }catch (err) {
+      console.log(err.stack);
+  }
+}
+fetch().catch(console.dir);
+  
+})
+
 app.get('/login', (req,res)=>{
 
   async function fetch(){
@@ -47,7 +67,7 @@ app.get('/login', (req,res)=>{
       await client.connect();
 
         const db = client.db("C-suite");
-        const col = db.collection("users");
+        const col = db.collection("Users");
 
         const filter = { "email": req.query.email };
         col.findOne(filter).then((document)=>{
@@ -69,14 +89,18 @@ app.post('/signup', (req, res)=>{
         await client.connect();
 
         const db = client.db("C-suite");
-        const col = db.collection("users");
+        const col = db.collection("Users");
         console.log("Successfully connected to Atlas");
 
         const peopleDocuments = [
           {
             "name": req.body.name,
             "email": req.body.email,
+            "linkedin":req.body.linkedin,
             "password": req.body.password,
+            "type":"user",
+            "first-login":true,
+            "elacomplete":false,
           },
         ]
 

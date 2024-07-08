@@ -12,15 +12,17 @@ import {
   faFacebook,
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+
 function ContactUs() {
   return (
-    <div className="ContactUs" id="contact">
+    <div className="contactUs" id="contact">
       <section className="leftcontainer">
         <div className="leftRow">
           <h1>Contact Us</h1>
           <p>
-            Feel free to get in touch with us we always open to discussing new
-            projects. creative ideas or opportunities to be part of your vision
+            Feel free to get in touch with us. We are always open to discussing
+            new projects, creative ideas, or opportunities to be part of your
+            vision.
           </p>
         </div>
         <div className="leftRow">
@@ -29,7 +31,7 @@ function ContactUs() {
             <div className="c1">+91-9865149951</div>
           </a>
           <a className="mail" href="mailto:info@lmsportal.co.in">
-            <FontAwesomeIcon icon={faEnvelope} />{" "}
+            <FontAwesomeIcon icon={faEnvelope} />
             <div className="c1">info@lmsportal.co.in</div>
           </a>
           <a
@@ -48,6 +50,7 @@ function ContactUs() {
             href="https://www.facebook.com"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Facebook"
           >
             <FontAwesomeIcon icon={faFacebook} />
           </a>
@@ -56,6 +59,7 @@ function ContactUs() {
             href="https://www.twitter.com"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Twitter"
           >
             <FontAwesomeIcon icon={faXTwitter} />
           </a>
@@ -64,6 +68,7 @@ function ContactUs() {
             href="https://www.instagram.com"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Instagram"
           >
             <FontAwesomeIcon icon={faInstagram} />
           </a>
@@ -75,51 +80,46 @@ function ContactUs() {
           <form>
             <div className="rows">
               <div className="inputgroup">
-                <label htmlFor="firstname">First Name</label>
                 <input
                   type="text"
                   name="firstname"
-                  placeholder="Enter your first name"
+                  placeholder=" "
+                  id="firstname"
                 />
+                <label htmlFor="firstname">First Name</label>
               </div>
               <div className="inputgroup">
-                <label htmlFor="lastname">Last Name</label>
                 <input
                   type="text"
                   name="lastname"
-                  placeholder="Enter your last name"
+                  placeholder=" "
+                  id="lastname"
                 />
+                <label htmlFor="lastname">Last Name</label>
               </div>
             </div>
             <div className="rows">
               <div className="inputgroup">
-                <label htmlFor="Email">Email</label>
-                <input
-                  type="text"
-                  name="Email"
-                  placeholder="Enter your email id"
-                />
+                <input type="text" name="Email" placeholder=" " id="email" />
+                <label htmlFor="email">Email</label>
               </div>
               <div className="inputgroup">
-                <label htmlFor="Companyname">Company Name</label>
                 <input
                   type="text"
                   name="Companyname"
-                  placeholder="Enter your Company name"
+                  placeholder=" "
+                  id="companyname"
                 />
+                <label htmlFor="companyname">Company Name</label>
               </div>
             </div>
             <div className="messagegroup">
-              <label htmlFor="message">Message</label>
-              <textarea
-                type="text"
-                name="message"
-                placeholder="Enter your Company name"
-              />
+              <textarea name="message" placeholder=" " id="message"></textarea>
+              <label htmlFor="message">Have any message / Queries ?</label>
             </div>
             <div className="submit">
               <input type="submit" value="Submit" />
-            </div>{" "}
+            </div>
           </form>
         </div>
       </section>

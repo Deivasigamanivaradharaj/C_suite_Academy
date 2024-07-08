@@ -1,0 +1,401 @@
+.testPage {
+  display: flex;
+  height: 100vh;
+  padding: 20px;
+  /* align-items: center; */
+  flex-direction: column;
+  background-color: var(--primary-bg);
+}
+
+/*  */
+.countdown {
+  color: white;
+}
+
+.testPageResultsContainer {
+  text-align: left;
+  margin: 0 auto;
+  background-color: var(--primary-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.testPageResultsContainer h3 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.testPageResult {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.testPageResult p.question {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.testPageResult .answerResult {
+  margin-top: 10px;
+}
+
+.testPageResult p {
+  margin: 5px 0;
+}
+
+/*  */
+
+.testPageHeader {
+  display: flex;
+  padding: 20px;
+  padding-right: 0px;
+  color: #fff;
+  text-align: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.testPageHeader div:first-child {
+  display: flex;
+  align-items: center;
+  border-radius: 13px;
+  padding: 10px 0px 10px 20px;
+  background-color: var(--primary-bg);
+}
+
+.testPageHeader div {
+  background-color: red;
+}
+
+.testPageHeader div:first-child h3 {
+  margin-top: 0%;
+  margin-bottom: 0%;
+  color: var(--primary-dark);
+}
+
+.testPageHeader div:first-child h4 {
+  margin-left: 30px;
+  padding: 9px 12px;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: var(--primary-dark);
+}
+
+.testPageHeader div:last-child {
+  padding: 10px 10px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: var(--primary-dark);
+}
+
+.testPageHeader div p {
+  font-size: 0.9em;
+  margin: 0px auto;
+  font-weight: 500;
+  color: var(--primary-bg);
+}
+
+.testPageMainContainer {
+  display: flex;
+  /* gap: 15px; */
+  padding: 5px;
+  /* width: 80%; */
+  /* background-color: yellow; */
+}
+
+.testPageSidebar {
+  width: 5%;
+  padding-top: 35px;
+  margin-right: -15px;
+  display: flex;
+  justify-content: center;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: #e1c0ff;
+  border-right: 1px solid rgba(0, 0, 0, 0.21);
+}
+
+.testPageSidebar ul {
+  padding: 8px 5px;
+  list-style-type: none;
+  /* background-color: burlywood; */
+}
+
+.testPageSidebar ul li {
+  width: 35px;
+  color: white;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.testPageSidebarItem {
+  padding: 5px 10px;
+  text-align: center;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.614);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.testPageSidebarItem:hover {
+  opacity: 0.8;
+}
+
+.testPageSidebarItem.selected {
+  background-color: var(--primary-dark);
+}
+
+.testPageContent {
+  width: 95%;
+  display: flex;
+  gap: 15px;
+}
+
+.testPageQuestionBox {
+  width: 45%;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: var(--primary-bg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.testPageQuestionBox .testPageSpan {
+  margin: 20px;
+  /* background-color: red; */
+}
+
+.testPageTotalQuestion {
+  font-weight: 500;
+  padding: 5px 10px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.232);
+  background-color: #e0bcff;
+}
+
+.testAnswerHere {
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.testPageRHS {
+  width: 55%;
+  /* background-color: red; */
+}
+
+.testPageQuestionContainer {
+  padding-bottom: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.testPageOptionLabel {
+  display: block;
+  cursor: pointer;
+  margin: 20px;
+  display: flex;
+  /* align-items: center; */
+  /* width: max-content; */
+  border-radius: 5px;
+  padding: 5px 10px;
+  /* margin-bottom: 10px; */
+  background-color: var(--primary-bg);
+}
+
+.testPageOptionLabel input[type="radio"] {
+  /*  */
+  transform: scale(1.3);
+  outline: none;
+  border: none;
+  margin-right: 8px;
+  position: relative;
+}
+
+.testPageNavigationButtons {
+  padding: 8px;
+  display: flex;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  justify-content: end;
+  background-color: #e0bcff;
+}
+
+.testPageNextButton,
+.testPageSubmitButton {
+  padding: 6px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #00ff08;
+}
+
+.testPageNextButton:hover,
+.testPageSubmitButton:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 1125px) {
+  .testPage {
+    height: 100vh;
+  }
+
+  /*  */
+
+  .testPageHeader {
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    /*  */
+  }
+
+  .testPageHeader div:first-child h4 {
+    font-size: 0.65em;
+    margin-left: 5px;
+    padding: 5px;
+    /*  */
+  }
+
+  .testPageHeader div:first-child h3 {
+    font-size: 0.8em;
+    /*  */
+  }
+
+  /* .testPageHeader div {
+    background-color: red;
+  } */
+
+  .testPageHeader div:last-child {
+    width: 100%;
+    display: flex;
+    padding: 5px 10px;
+    border-radius: 7px;
+    /*  */
+  }
+
+  .testPageHeader div p {
+    font-size: 0.6em;
+    margin: 0px auto;
+  }
+
+  .testPageHeader div p:last-child {
+    border-left: 1px solid black;
+  }
+
+  /*  */
+
+  .testPageMainContainer {
+    flex-direction: column;
+  }
+
+  .testPageSidebar {
+    padding: 0%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  .testPageSidebar,
+  .testPageContent {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .testPageSidebar ul {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0px;
+    overflow-x: scroll;
+  }
+
+  .testPageRHS,
+  .testPageQuestionBox {
+    width: 100%;
+  }
+
+  .testPageSidebar ul li {
+    width: 25px;
+    font-size: 0.75em;
+    margin-bottom: 0px;
+  }
+
+  .testPageSidebarItem {
+    padding: 3px 6px;
+  }
+
+  .testPageTotalQuestion {
+    font-size: 0.7em;
+  }
+
+  .testPageTotalQuestion {
+    border-radius: 5px;
+  }
+
+  .testPageQuestionBox .testPageSpan {
+    margin: 5px;
+  }
+
+  .testPageQuestionBox .testPageSpan h4 {
+    font-size: 0.8em;
+    margin-bottom: 0px;
+  }
+
+  .testPageQuestionBox .testPageSpan p {
+    font-size: 0.65em;
+    line-height: 1em;
+    margin-top: 5px;
+  }
+
+  .testPageOptionLabel {
+    margin: 10px;
+    font-size: 0.7em;
+  }
+
+  .testPageNavigationButtons {
+    padding: 5px;
+  }
+
+  .testPageNextButton,
+  .testPageSubmitButton {
+    font-size: small;
+    padding: 5px 12px;
+  }
+
+  .testPageResultsContainer {
+    padding: 15px;
+  }
+
+  .testPageResultsContainer h3 {
+    font-size: 1em;
+  }
+
+  .testPageResult {
+    padding: 12px;
+  }
+
+  .testPageResult .question {
+    font-size: 0.7em;
+    line-height: 1.2em;
+  }
+
+  .testPageResult .answerResult {
+    font-size: 0.7em;
+    line-height: 1.2em;
+  }
+}

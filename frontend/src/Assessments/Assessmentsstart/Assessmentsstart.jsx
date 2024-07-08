@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './assessmentsstart.css';
 import logoela from '../asset/brand-footer.png';
-import questionData from './Questionsdata.json';
+// import questionData from './Questionsdata.json';
 import { FaCheckCircle } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 //react-router
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Assessmentsstart = () => {
 
@@ -18,17 +19,29 @@ const Assessmentsstart = () => {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [timeLeft, setTimeLeft] = useState(23 * 60 + 46); // 23 minutes and 46 seconds
+  const [score, setScore] = useState({});
+  const [timeLeft, setTimeLeft] = useState(3600); // 23 minutes and 46 seconds
   const [selectedUserDropdown, setSelectedUserDropdown] = useState(1);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [bookmarkedQuestions, setBookmarkedQuestions] = useState({});
+  var questionData = JSON.parse(localStorage.getItem("questionData"))
+  const [finalScore, setFinalScore] = useState(0);
+
 
   useEffect(() => {
+    setTimeLeft(localStorage.getItem("TimeLeft"))
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(()=>{
+    if(timeLeft<=0){
+      localStorage.setItem("elacomplete", "true")
+      testcomplete();
+    }
+  })
 
   const handleBookmark = () => {
     // setBookmarkedQuestions((prev) =>
@@ -58,6 +71,10 @@ const Assessmentsstart = () => {
       ...selectedOptions,
       [`${currentSectionIndex}-${currentQuestionIndex}`]: event.target.value,
     });
+    setScore({
+      ...score,
+      [`${currentSectionIndex}-${currentQuestionIndex}`]: currentQuestion.answer===event.target.value?1:0,
+    });
   };
 
   const handleSelectChange = (event) => {
@@ -84,18 +101,22 @@ const Assessmentsstart = () => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
+    var timercolor = {}
+    if(seconds<=30){
+      timercolor = {color:'red'}
+    }
     return (
       <div className="time-row">
         <div className="time-item">
-          <p className='para-one'>{hours.toString().padStart(2, '0')}</p>
+          <p style={timercolor} className='para-one'>{hours.toString().padStart(2, '0')}</p>
           <p className='para-two'>Hours</p>
         </div>
         <div className="time-item">
-          <p className='para-one'>{minutes.toString().padStart(2, '0')}</p>
+          <p style={timercolor} className='para-one'>{minutes.toString().padStart(2, '0')}</p>
           <p className='para-two'>Minutes</p>
         </div>
         <div className="time-item">
-          <p className='para-one'>{remainingSeconds.toString().padStart(2, '0')}</p>
+          <p style={timercolor} className='para-one'>{remainingSeconds.toString().padStart(2, '0')}</p>
           <p className='para-two'>Seconds</p>
         </div>
       </div>
@@ -149,7 +170,15 @@ const Assessmentsstart = () => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => navigate("../")
+          onClick: () => {
+            localStorage.removeItem("isloggedin")
+            localStorage.removeItem("linkedin")
+            localStorage.removeItem("elacomplete")
+            localStorage.removeItem("userid")
+            localStorage.removeItem("email")
+            localStorage.removeItem("name")
+            navigate("../")
+          }
         },
         {
           label: 'No',
@@ -168,7 +197,10 @@ const Assessmentsstart = () => {
         buttons: [
           {
             label: 'Yes',
-            onClick: () => navigate("/finish-assessment")
+            onClick: () => {
+              localStorage.setItem("elacomplete", "true")
+              testcomplete();
+            }
           },
           {
             label: 'No',
@@ -184,7 +216,7 @@ const Assessmentsstart = () => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => navigate("/finish-assessment")
+          onClick: () => testcomplete()
         },
         {
           label: 'No',
@@ -194,6 +226,16 @@ const Assessmentsstart = () => {
     });
   }
   };
+
+  function testcomplete(){
+    let sum = 0;
+    for (let i = 0; i < Object.values(score).length; i++) {
+      sum += Object.values(score)[i];
+    }
+    setFinalScore(sum);
+    localStorage.setItem("finalScore", sum);
+    navigate("/finish-assessment")
+  }
 
   return (
     <div className='assessment-head'>
@@ -205,7 +247,7 @@ const Assessmentsstart = () => {
           <>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
-                Deivasigamani
+                {localStorage.getItem("name")}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
@@ -225,7 +267,7 @@ const Assessmentsstart = () => {
 
         <div className='container-fluid'>
           <div className='row'>
-            <div className='w-75 h-100'>
+            <div className='w-75 h-100 left-side'>
               <main className="quiz-main">
                 <div className='first-content'>
                   <p className='count-question'>
@@ -276,12 +318,12 @@ const Assessmentsstart = () => {
                 )}
               </main>
             </div>
-            <div className='w-25 h-100'>
-              <div className='right-side-component'>
+            <div className='w-25 h-100 right-side'>
+              <div className='w-100 right-side-component'>
                 <div className="timer">
                   {formatTime(timeLeft)}
                 </div>
-                <div style={{display:"flex", flexDirection:"column",gap:"5px"}}>
+                <div className='questions-container' style={{display:"flex", flexDirection:"column",gap:"5px", width:"100%"}}>
                 <div className="questions">
                   <p>Questions</p>
                 </div>
@@ -290,7 +332,7 @@ const Assessmentsstart = () => {
                     <option key={index} value={index + 1}>{`Section ${index + 1}`}</option>
                   ))}
                 </select>
-                <div id='Test-marks-container'>
+                <div id='Test-marks-container' style={{width:"100%", paddingLeft:"2rem"}}>
                   <div className="question-numbers">
                     {currentSectionQuestions.map((question, quesIndex) => (
                       <button

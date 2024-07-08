@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 //import css
 import './entrylevel.css';
@@ -19,8 +19,53 @@ import logoela from '../asset/brand-footer.png'
 
 //react-router- quick assessments
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Entrylevel = () => {
+    const [time, settime] = useState(0);
+    let [totalQuestions, settotalQuestions] = useState(0);
+
+    useEffect(()=>{
+        fetchela();
+        },[])
+      
+        async function fetchela(){
+          try {
+            const response = await axios.get('http://localhost:3030/fetchela');
+            // console.log(JSON.parse(response.data))
+            // console.log(questionData)
+            var data = JSON.parse(response.data);
+            localStorage.setItem("TimeLeft", data.time)
+            settime(data.time);
+            localStorage.setItem("questionData", JSON.stringify(data))
+            var total = 0;
+            for(var index in data.sections){
+            total += data.sections[index].questions.length;
+            }
+            settotalQuestions(total)
+          } catch (error) {
+            console.error(error); // Handle errors
+          }
+        }
+
+        const formatTimevalue = (seconds) => {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = seconds % 60;
+            var time = "0";
+            console.log(minutes)
+            if(hours>0){
+              time = hours.toString().padStart(2, '0')+" hours "+minutes.toString().padStart(2, '0')+" minutues "+remainingSeconds.toString().padStart(2, '0')+" seconds";
+            }
+            else if(minutes>0){
+              time = minutes.toString().padStart(2, '0')+" minutes "+remainingSeconds.toString().padStart(2, '0')+" seconds";
+            }
+            else{
+              time = remainingSeconds.toString().padStart(2, '0')+" seconds";
+            }
+            return time;
+          };            
+
   return (
    <>
     <div className='entrylevel-head'>
@@ -50,7 +95,7 @@ const Entrylevel = () => {
                                 <p>
                                     <BiAlarm size='1.5rem'/>
                                     <span className='span-type'>Time :</span> 
-                                    <span className='span-para'>30 min</span>
+                                    <span className='span-para'>{formatTimevalue(time)}</span>
                                 </p>
 
                                 <p>
@@ -71,7 +116,7 @@ const Entrylevel = () => {
                             <div className="assessment-overview">
                                 <h2>Assessment Overview</h2>
                                 <p className='first-para'>This Entry Level Assessment (ELA) is designed to evaluate your fundamental skills across various domains. It includes questions on mathematics, logical reasoning, verbal ability, and basic computer skills.</p>
-                                <p className='number-questions'>No of questions : <span>30 MCQ’s</span></p>
+                                <p className='number-questions'>No of questions : <span>{totalQuestions} MCQ’s</span></p>
                                 <Link to='/assessment-page'><button>Start Assessment</button></Link>
                             </div>
                         </div>

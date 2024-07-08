@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './FindPricing.css';
 import Aos from "aos"
 import 'aos/dist/aos.css'
+import { Link } from 'react-router-dom';
 
 function FindPricing() {
 
@@ -18,7 +19,7 @@ function FindPricing() {
           <p>Find your perfect balance of collaboration, security, and support with a C-suite Academy subscription.</p>
         </div>
         <div className="rightcontainer" data-aos="fade-left">
-          <button>Click here</button>
+          <Link to="/payment"><button>Click here</button></Link>
         </div>
       </div>
     </div>

@@ -7,3 +7,13 @@
 html {
     scroll-behavior: smooth;
   }
+
+  :root {
+    --primary-color: #8949ff;
+    --primary-light: #a86aff;
+    --primary-dark: #5f32b8;
+    --primary-bg: #f3e6ff;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --shadow-light: rgba(0, 0, 0, 0.1);
+  }
+  

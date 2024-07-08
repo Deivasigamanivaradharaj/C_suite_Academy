@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,17 @@ import carousel2 from './Assets/image2.png'
 import carousel3 from './Assets/image3.png'
 
 function Authentication() {
+
+  useEffect(()=>{
+    if(localStorage.getItem("isloggedin")==="true"){
+      if(localStorage.getItem("elacomplete")==="false"){
+        navigate("../quick-assessment");
+      }
+      else{
+        navigate("../home");
+      }
+    }
+  },[])
 
   const navigate = useNavigate();
 
@@ -68,10 +79,12 @@ function Authentication() {
       const [name, setName] = useState('');
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');      
+      const [confPassword, setConfPassword] = useState('');
+      const [linkedin, setLinkedin] = useState('');
 
       async function handlesignin(){
         try {
-          const response = await axios.get('https://sunshine-1.onrender.com/check', {
+          const response = await axios.get('http://localhost:3030/check', {
             params: {
               email: loginemail,
             },});
@@ -81,9 +94,27 @@ function Authentication() {
           else{
             if(JSON.parse(response.data).password==loginpassword){
               toast.success("Login Successfull!");
-              setTimeout(() => {
-                navigate("../quick-assessment");
-              }, 5000);
+              if(JSON.parse(response.data).type=="user"){
+                localStorage.setItem("isloggedin", true);
+                localStorage.setItem("userid", JSON.parse(response.data)._id);
+                localStorage.setItem("name", JSON.parse(response.data).name);
+                localStorage.setItem("email", JSON.parse(response.data).email);
+                localStorage.setItem("linkedin", JSON.parse(response.data).linkedin);
+                localStorage.setItem("elacomplete", JSON.parse(response.data).elacomplete);
+                if(JSON.parse(response.data).elacomplete==false){
+                  setTimeout(() => {
+                    navigate("../quick-assessment");
+                  }, 5000);
+                }
+                else{
+                  setTimeout(() => {
+                    navigate("../home");
+                  }, 5000);
+                }
+              }
+              else{
+                toast.success("not a user?");
+              }
             }
             else{
               toast.error("Check Your Password!");
@@ -95,16 +126,17 @@ function Authentication() {
       };
 
       async function handlesignup(){
-        let data =  {name:name, email:email, password:password };
+        if(password==confPassword){
+          let data =  {name:name, email:email, linkedin:linkedin, password:password };
         try {
-          const response = await axios.get('https://sunshine-1.onrender.com/check', {
+          const response = await axios.get('http://localhost:3030/check', {
             params: {
               email: email,
             },});
           console.log(response.data);
           if(response.data=="null"){
             try {
-              const response = await axios.post('https://sunshine-1.onrender.com/signup', data, {
+              const response = await axios.post('http://localhost:3030/signup', data, {
                 headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
               });
               console.log(response.data);
@@ -123,6 +155,11 @@ function Authentication() {
         } catch (error) {
           console.error(error); // Handle errors
         }
+        }
+        else{
+          toast.error("Password and Confirm Password Does not Match!")
+        }
+
       };
 
   return (
@@ -222,6 +259,17 @@ function Authentication() {
 
                 <div className="input-wrap">
                   <input
+                    type="text"
+                    className="input-field"
+                    autocomplete="off"
+                    required
+                    onChange={(e)=> setLinkedin(e.target.value)}
+                  />
+                  <label>LinkedIn</label>
+                </div>
+
+                <div className="input-wrap">
+                  <input
                     type="password"
                     minlength="4"
                     className="input-field"
@@ -230,6 +278,18 @@ function Authentication() {
                     onChange={(e)=> setPassword(e.target.value)}
                   />
                   <label>Password</label>
+                </div>
+
+                <div className="input-wrap">
+                  <input
+                    type="password"
+                    minlength="4"
+                    className="input-field"
+                    autocomplete="off"
+                    required
+                    onChange={(e)=> setConfPassword(e.target.value)}
+                  />
+                  <label>Confirm Password</label>
                 </div>
 
                 <button type="submit" className="sign-btn" >Sign Up</button>

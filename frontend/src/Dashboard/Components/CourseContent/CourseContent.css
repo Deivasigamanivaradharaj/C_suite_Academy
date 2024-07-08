@@ -1,0 +1,450 @@
+.courseContentContainer {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  cursor: default;
+  background-color: var(--primary-bg);
+}
+
+.firstRow {
+  width: 100%;
+  padding: 13px 25px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+}
+
+.firstRowBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: none;
+  /* padding: 0px; */
+  color: white;
+  padding: 5px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-color: var(--primary-light);
+  transition: all 0.3s;
+}
+
+.firstRowBtn span {
+  font-size: 1.5em;
+  padding: 0;
+  line-height: 1em;
+  width: min-content;
+  /* background-color: red; */
+}
+
+.firstRowBtn:hover,
+.firstRowHeadingBox button:hover {
+  transform: translateY(-3px);
+  background-color: var(--primary-color);
+  box-shadow: 0px 6px 8px var(--shadow-light);
+}
+
+.firstRowHeadingBox {
+  display: flex;
+  /* background-color: yellow; */
+}
+
+.courseHeading {
+  font-size: 1.75em;
+  font-weight: 500;
+  color: var(--primary-dark);
+}
+
+.firstRowHeadingBox button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -10px;
+  outline: none;
+  border: none;
+  color: white;
+  padding: 0px;
+  border-radius: 8px;
+  background-color: var(--primary-light);
+  transition: all 0.3s;
+}
+
+/* .firstRowHeadingBox button span {
+  background-color: aqua;
+} */
+
+.MenuBarIcons {
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.TopBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.TitleBar {
+  font-weight: 500;
+  font-size: 30px;
+}
+.BackBtn {
+  padding: 15px 25px;
+  border: unset;
+  border-radius: 15px;
+  color: #212121;
+  z-index: 1;
+  background: var(--primary-bg);
+  position: relative;
+
+  font-size: 17px;
+  /* -webkit-box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27); */
+  /* box-shadow: 4px 8px 19px -3px rgba(0,0,0,0.27); */
+  transition: all 250ms;
+  overflow: hidden;
+}
+
+.BackBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 15px;
+  background-color: var(--primary-color);
+  z-index: -1;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  transition: all 250ms;
+}
+
+.BackBtn:hover {
+  color: #e8e8e8;
+}
+
+.BackBtn:hover::before {
+  width: 100%;
+}
+
+.settingTab {
+  display: flex;
+  margin-right: -10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  justify-content: space-between;
+  background-color: var(--primary-bg);
+}
+
+.infoBox {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+  padding: 20px;
+}
+.infoBox h1 {
+  font-size: 14px;
+}
+
+.lessonDescriptionBox {
+  background-color: var(--primary-bg);
+  border-radius: 10px;
+  padding: 10px;
+}
+.lessonDescriptionBoxTitle {
+  font-size: 20px;
+}
+.lessonDescriptionBoxDescription {
+  padding-left: 18px;
+}
+
+.testButton {
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 20px;
+  font-size: 1.1em;
+  background-color: var(--primary-light);
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.testButton:hover {
+  background-color: var(--primary-color);
+  box-shadow: 0px 4px 6px var(--shadow-light);
+}
+
+.courseContentContainer .secondRow {
+  /* background-color: aqua; */
+  width: 100%;
+}
+
+.secondRow .col-md-8 {
+  padding-left: 0%;
+}
+
+/* .videoBox {
+  background-color: rgb(159, 101, 25);
+} */
+
+.videoBox iframe {
+  border-radius: 20px;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+}
+
+/* .videoTitle {
+  font-size: 1.3em;
+  background-color: yellow;
+  color: var(--primary-dark);
+} */
+
+/* .tabBox {
+  box-shadow: 0px 4px 6px var(--shadow-color);
+} */
+
+.accordianBox {
+  padding: 5px 15px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+}
+
+.accordianBox .accordion-item {
+  border: none;
+  /* background-color: violet; */
+  margin: 8px 0;
+  border-radius: 16px;
+}
+
+.accordianBox .accordion-button {
+  border-radius: 16px !important;
+  background-color: var(--primary-bg);
+  border: none;
+  transition: border-radius 0.3s ease, background-color 0.3s;
+}
+
+.accordianBox .accordion-button:not(.collapsed) {
+  border-bottom-left-radius: 16px !important;
+  border-bottom-right-radius: 16px !important;
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.accordianBox .accordion-collapse {
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 16px !important;
+}
+
+.accordianBox .accordion-header:focus,
+.accordianBox .accordion-header:active,
+.accordianBox .accordion-header:focus-visible,
+.accordianBox .accordion-button:focus,
+.accordianBox .accordion-button:active,
+.accordianBox .accordion-button:focus-visible {
+  outline: none;
+  /* color: black; */
+  box-shadow: none;
+}
+
+.accordianBox .accordion-header .accordion-button {
+  padding: 15px;
+}
+
+.accordianBox .accordion-body {
+  padding: 8px 10px;
+  padding-left: 50px;
+  border-radius: 16px;
+  font-size: 0.9em;
+  /* background-color: var(--primary-bg); */
+}
+
+.accordianBox .accordion-body .list-group-item:first-child {
+  margin-top: 0px;
+}
+
+.accordianBox .accordion-body .list-group-item {
+  margin-top: 7px;
+  display: flex;
+  outline: none;
+  border: none;
+  flex-direction: column;
+  border-radius: 10px !important;
+  background-color: var(--primary-bg);
+}
+
+.lesson-meta {
+  /* background-color: yellow; */
+  padding-left: 15px;
+}
+
+.lesson-title {
+  font-size: 1.1em;
+  font-weight: 450;
+  margin-bottom: 5px;
+  /* background-color: steelblue; */
+}
+
+.lesson-meta .lesson-duration,
+.list-group-item .lesson-duration {
+  padding: 0 0 0 20px;
+  font-size: 0.8em;
+  width: max-content;
+  /* background-color: green; */
+}
+
+.lesson-meta span {
+  font-size: 0.8em;
+}
+
+.list-group-item {
+  padding: 8px 10px;
+  /* background-color: palegoldenrod; */
+}
+
+.testButtonBox {
+  padding: 8px 15px;
+  margin-top: 7px;
+  display: flex;
+  gap: 5px;
+  color: var(--primary-dark);
+  outline: none;
+  border: none;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: var(--primary-bg);
+}
+
+.testButtonBox div {
+  display: flex;
+  width: 100%;
+  border-radius: 5px;
+  padding: 2px 3px;
+  background-color: white;
+}
+
+.testButtonBox div div {
+  display: flex;
+  width: 60%;
+  flex-direction: column;
+}
+
+.testButton {
+  /* width: 40%; */
+  padding: 5px 15px;
+  margin-left: auto;
+}
+
+.flexyBox {
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  margin-bottom: 10px;
+  border-radius: 0%;
+}
+
+.flexyBox button {
+  margin-left: auto;
+}
+
+.list-group-item a {
+  padding-left: 5px;
+  font-weight: 400;
+  text-decoration: none;
+  color: var(--primary-dark);
+}
+
+/*  */
+.CCbgColor {
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 4px 6px var(--shadow-color);
+}
+
+.showClassForXS {
+  display: none;
+}
+
+/*  */
+@media (max-width: 1125px) {
+  .hideClassForXS {
+    display: none;
+  }
+
+  .showClassForXS {
+    display: flex;
+  }
+
+  .firstRow {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .courseHeading {
+    font-size: 0.99em;
+    /* flex: 3; */
+  }
+
+  .firstRowBtn {
+    padding: 5px 10px;
+    /* flex: 1; */
+    margin: 0;
+    font-size: 0.7em;
+  }
+
+  .btnRows {
+    display: flex;
+    margin-bottom: 5px;
+    justify-content: space-between;
+  }
+
+  .pdy .videoBox {
+    padding-left: 0% !important;
+    padding-right: 0% !important;
+    margin-bottom: -10px;
+  }
+
+  .secondRow .col-md-8 {
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+
+  .testButtonBox {
+    padding: 8px 12px;
+    font-size: 0.825em;
+  }
+
+  .testButtonBox div div {
+    font-size: 0.85em;
+  }
+
+  .testButton {
+    font-size: 0.85em;
+    margin: auto;
+  }
+
+  .lesson-title {
+    font-size: 0.8em;
+  }
+
+  .lessonDescriptionBoxTitle {
+    font-size: 14px;
+  }
+  .lessonDescriptionBoxDescription {
+    font-size: 12px;
+  }
+
+  .infoBox h1 {
+    font-size: 14px;
+  }
+}
+
+/* 
+  margin-right: -10px;
+  margin-left: 10px;
+   */

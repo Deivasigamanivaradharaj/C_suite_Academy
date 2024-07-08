@@ -19,7 +19,7 @@ function Home() {
         <Statistics/>      
       </div>
       <div className="header-container">
-        <CourseList />
+        {/* <CourseList /> */}
       </div>
     </>
   )
