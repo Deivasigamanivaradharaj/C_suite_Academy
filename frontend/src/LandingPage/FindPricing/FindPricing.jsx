@@ -15,11 +15,11 @@ function FindPricing() {
     <div className='FindPricing'>
       <div className="container">
         <div className="leftcontainer" data-aos="fade-right">
-          <h1>Choose a subscription that's right for you</h1>
+          <h1>Choose a course that's right for you</h1>
           <p>Find your perfect balance of collaboration, security, and support with a C-suite Academy subscription.</p>
         </div>
         <div className="rightcontainer" data-aos="fade-left">
-          <Link to="/payment"><button>Click here</button></Link>
+          <Link to="/authentication"><button>Click here</button></Link>
         </div>
       </div>
     </div>

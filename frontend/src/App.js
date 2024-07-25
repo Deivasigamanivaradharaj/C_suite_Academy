@@ -30,7 +30,8 @@ import Pricing from './PaymentPage/Pricing';
 
 import Dashboard from './Dashboard/Dashboard';
 import Home from './Dashboard/Components/Home/Home';
-import Courses from './Dashboard/Components/Courses/Courses';
+// import Courses from './Dashboard/Components/Courses/Courses';
+import Courses from './LandingPage/Courses/Courses';
 import Profile from './Dashboard/Components/Profile/Profile';
 import CourseContent from "./Dashboard/Components/CourseContent/CourseContent";
 import CourseDetails from "./Dashboard/Components/CourseDetails/CourseDetails";
@@ -58,7 +59,7 @@ function App() {
       <Router>
         <ToastContainer />
         <Routes>
-          <Route path="/" element={[<Landingpage/>,<Management/>,<Brands/>,<Success/>,<Engage/>,<Partners/>,<FindPricing/>,<ContactUs/>,<Footer/>]}/>
+          <Route path="/" element={[<Landingpage/>,<Management/>,<Brands/>,<Success/>,<Engage/>,<Courses/>,<Partners/>,<FindPricing/>,<ContactUs/>,<Footer/>]}/>
           <Route path='/authentication' element={<Auth />}/>
           <Route path="reset-password" element={<ResetPage />} />
           <Route path="auth-linkedin-bridge" element={<LinkedInAuth />} />

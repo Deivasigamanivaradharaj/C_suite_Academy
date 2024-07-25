@@ -24,14 +24,14 @@ function Header() {
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav ml-auto">
                 <li className="nav-item active ml-4">
-                  <Link className="nav-link text-light">Our Courses <FontAwesomeIcon className='angledown' icon={faAngleDown} /></Link>
+                  <Link className="nav-link text-light">Our Features <FontAwesomeIcon className='angledown' icon={faAngleDown} /></Link>
                    <NavSlider  />
                 </li>
                 <li className="nav-item active ml-4">
                 <Link className="nav-link text-light ">Why C-Suite?</Link>
                 </li>
                 <li className="nav-item active ml-4">
-                <Link to={'/payment'} className="nav-link text-light">Pricing</Link>
+                <Link className="nav-link text-light">Courses</Link>
                 </li>
                 <li className="nav-item active ml-4">
                 <Link className="nav-link text-light">Customers</Link>
