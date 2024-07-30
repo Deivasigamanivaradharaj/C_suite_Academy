@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import logoShort from "../Assets/Images/logoShort.png";
 import logoTxt from "../Assets/Images/logoTxt.png";
@@ -8,8 +8,6 @@ import {
   faHome,
   faUser,
   faHeart,
-  faStar,
-  faHistory,
   faBook,
   faCog,
   faSignOutAlt,
@@ -17,32 +15,66 @@ import {
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
-function SidebarItem({ icon, text, active, alert, expanded, path }) {
+function SidebarItem({
+  icon,
+  text,
+  active,
+  expanded,
+  path,
+  splMargin,
+  loggedOut,
+}) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const iconStyle = {
+    marginLeft: expanded
+      ? ""
+      : windowWidth <= 1125 && !splMargin
+      ? "7px"
+      : windowWidth <= 1125 && splMargin
+      ? "5px"
+      : splMargin
+      ? "6.25px"
+      : "8.25px",
+    flex: expanded ? 1 : "",
+  };
+
   return (
     <NavLink
-      exact
       to={path}
       className={`sidebar-item ${active ? "active" : ""} ${
         expanded ? "expanded" : "collapsed"
       }`}
+      end={true}
+      onClick={() =>
+        loggedOut
+          ? alert("not logged out but function triggered, edit in sidebar.jsx")
+          : ""
+      }
     >
-      <FontAwesomeIcon
-        icon={icon}
-        className="icon"
-        // style={{ margin: expanded ? "" : "auto" }}
-        style={{ marginLeft: expanded ? "" : "6px", flex: expanded ? 1 : "" }}
-      />
+      <FontAwesomeIcon icon={icon} className="icon" style={iconStyle} />
       <span
         className="item-text"
         style={{
-          marginLeft: expanded ? "10px" : "",
+          marginLeft: expanded ? "6px" : "",
           flex: expanded ? 6 : 0,
           transform: expanded ? "translateX(0%)" : "translateX(-100%)",
           opacity: expanded ? 1 : 0,
         }}
       >
         {text}
-        {/* {expanded ? text : ""} */}
       </span>
     </NavLink>
   );
@@ -50,9 +82,31 @@ function SidebarItem({ icon, text, active, alert, expanded, path }) {
 
 const Sidebar = () => {
   const [expanded, setExpanded] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const toggleSidebar = () => {
     setExpanded(!expanded);
+  };
+
+  const iconStyle = {
+    marginLeft: expanded ? "" : windowWidth <= 1125 ? "3.5px" : "8px",
+    flex: expanded ? 1 : "",
+  };
+
+  const collapsedShortMobileLogo = {
+    marginLeft: expanded ? "" : windowWidth <= 835 ? "10px" : "0px",
   };
 
   return (
@@ -60,14 +114,10 @@ const Sidebar = () => {
       <aside className={`sidebar ${expanded ? "expanded" : "collapsed"}`}>
         <nav className="sidebar-nav">
           <div className="sidebar-header">
-            {/* <img
-              src={expanded ? logo : logoShort}
-              className={expanded ? "logo" : "logo-short"}
-              alt="Logo"
-            /> */}
             <img
               src={expanded ? logoShort : logoShort}
               className={expanded ? "logo-short" : "logo-short"}
+              style={collapsedShortMobileLogo}
               alt="Logo"
             />
             <img
@@ -87,30 +137,29 @@ const Sidebar = () => {
             >
               <FontAwesomeIcon
                 icon={expanded ? faChevronLeft : faBars}
+                style={
+                  (iconStyle,
+                  {
+                    marginLeft: expanded ? "" : "7px",
+                  })
+                }
                 className="icon"
-                // style={{ margin: expanded ? "" : "auto" }}
-                style={{
-                  marginLeft: expanded ? "" : "6px",
-                  flex: expanded ? 1 : "",
-                }}
               />
-
               <span
                 className="item-text"
                 style={{
-                  marginLeft: expanded ? "10px" : "",
+                  marginLeft: expanded ? "6px" : "",
                   flex: expanded ? 6 : 0,
-                  // transform: expanded ? "translateX(0%)" : "translateX(-100%)",
                   opacity: expanded ? 1 : 0,
                 }}
               >
-                {/* {expanded ? "Hide" : ""} */}
                 {"Hide"}
               </span>
             </button>
             <SidebarItem
               path={"./"}
               icon={faHome}
+              splMargin={true}
               text={"Dashboard"}
               expanded={expanded}
             />
@@ -122,6 +171,7 @@ const Sidebar = () => {
             />
             <SidebarItem
               icon={faHeart}
+              splMargin={true}
               path={"./enrolled"}
               text={"Enrolled"}
               expanded={expanded}
@@ -142,9 +192,10 @@ const Sidebar = () => {
             /> */}
             <SidebarItem
               icon={faSignOutAlt}
-              path={"../"}
+              path={"./logout"}
               text={"Logout"}
               expanded={expanded}
+              loggedOut={true}
             />
           </div>
         </nav>

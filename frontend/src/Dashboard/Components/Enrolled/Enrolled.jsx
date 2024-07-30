@@ -1,41 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../Courses/Courses.css";
 import { useNavigate } from "react-router-dom";
-import coursesData from "../Assets/Data/CourseList.json";
+import imgd from "../Assets/Images/imagenotxt2.png";
+import LoadingPage from "../LoadingPage/LoadingPage";
+import ErrorDataFetchOverlay from "../Error/ErrorDataFetchOverlay";
 
-const resolveImagePath = (relativePath) => {
-  return require(`../Assets/Images/${relativePath}`);
-};
-
-const Courses = () => {
+const Enrolled = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [allLessons, setAllLessons] = useState([]);
+  const [coursesData, setCoursesData] = useState([]);
+  const [fetchError, setFetchError] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [hasPurchasedCourses, setHasPurchasedCourses] = useState(true);
 
-  const getAllLessons = () => {
-    let lessons = [];
-    coursesData.forEach((course) => {
-      course.lessons.forEach((lesson) => {
-        if (!lessons.includes(lesson)) {
-          lessons.push(lesson);
+  // Data Fetching
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+        const coursesResponse = await axios.get(`https://csuite-production.up.railway.app/api/courseDetail`);
+
+        const allCourses = coursesResponse.data;
+
+        // isUserLogin ?
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        if (userInfo) {
+          const { coursePurchased } = userInfo;
+
+          // Checking course vangiyacha ?
+          if (coursePurchased.length === 0) {
+            setHasPurchasedCourses(false);
+          }
+
+          // Filtering
+          const filteredCourses = allCourses.filter((course) =>
+            coursePurchased.includes(course._id)
+          );
+          setCoursesData(filteredCourses);
+        } else {
+          setFetchError(true);
+          alert("User not logged in, Go to Profile page");
+          console.log("No user info found in localStorage");
         }
+
+        setIsLoading(false);
+      } catch (error) {
+        setFetchError(true);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const getAllLessons = () => {
+      let lessons = [];
+      coursesData.forEach((course) => {
+        course.lessons.forEach((lesson) => {
+          if (!lessons.includes(lesson.title)) {
+            lessons.push(lesson.title);
+          }
+        });
       });
-    });
-    return lessons.slice(0, 15);
-  };
 
-  const allLessons = getAllLessons();
+      // Random
+      for (let i = lessons.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [lessons[i], lessons[j]] = [lessons[j], lessons[i]];
+      }
+      return lessons.slice(0, 10);
+    };
 
-  const filterCourses = (filters) => {
-    if (filters.length === 0) {
-      return coursesData;
+    if (coursesData.length > 0) {
+      setAllLessons(getAllLessons());
+    }
+  }, [coursesData]);
+
+  const resolveImagePath = (imagePath) => {
+    if (
+      imagePath &&
+      (imagePath.startsWith("http://") || imagePath.startsWith("https://"))
+    ) {
+      return imagePath;
+    } else if (imagePath && imagePath.startsWith("base64")) {
+      return imgd;
     } else {
-      return coursesData.filter((course) =>
-        course.lessons.some((lesson) => filters.includes(lesson))
-      );
+      try {
+        return require(`../Assets/Images/${imagePath}`);
+      } catch (error) {
+        return imgd;
+      }
     }
   };
 
-  // Handle click on a filter chip
+  const filterCourses = (filters) => {
+    try {
+      if (filters.length === 0) {
+        return coursesData;
+      } else {
+        return coursesData.filter((course) =>
+          course.lessons.some((lesson) => filters.includes(lesson.title))
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      setFetchError(true);
+      return [];
+    }
+  };
+
   const handleFilterClick = (filter) => {
     if (selectedFilters.includes(filter)) {
       setSelectedFilters(selectedFilters.filter((f) => f !== filter));
@@ -44,20 +120,41 @@ const Courses = () => {
     }
   };
 
-  // Clear all filters
   const clearFilters = () => {
     setSelectedFilters([]);
   };
+
+  const truncateDescription = (description) => {
+    const words = description.split(" ");
+    const truncated = words.slice(0, 15).join(" ");
+    return truncated;
+  };
+
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return <ErrorDataFetchOverlay />;
+  }
 
   return (
     <>
       <div className="main-content">
         <div className="cardContainer3">
-          <h2>Enrolled Course</h2>
+          <h2>Enrolled Courses</h2>
+          {!hasPurchasedCourses && (
+            <h3>No courses have been purchased. Please purchase a course.</h3>
+          )}
+
           <div className="filterChips">
-            {allLessons.map((lesson) => (
+            {allLessons.map((lesson, index) => (
               <div
-                key={lesson}
+                key={index}
                 className={`filterChip ${
                   selectedFilters.includes(lesson) ? "active" : ""
                 }`}
@@ -74,18 +171,20 @@ const Courses = () => {
           </div>
           <div className="courseContainer3">
             {filterCourses(selectedFilters).map((course) => (
-              <div className="courseCard3" key={course.id}>
+              // {/* {coursesData.map((course) => ( */}
+              <div className="courseCard3" key={course._id}>
                 <div className="courseOverlay3">
                   <div className="courseImageBox3">
                     <img
-                      src={resolveImagePath(course.image)}
+                      // src={imgd}
+                      src={course.image ? resolveImagePath(course.image) : imgd}
                       alt={course.title}
                       className="courseImage3"
                     />
                     <div className="courseImageTxt3">{course.title}</div>
                   </div>
                   <div className="courseDetails3">
-                    <p>{course.description}</p>
+                    <p>{truncateDescription(course.description)}...</p>
                     <button className="courseDetailBtn3">View Details</button>
                   </div>
                 </div>
@@ -93,12 +192,14 @@ const Courses = () => {
                   <h5>Lessons</h5>
                   <ul>
                     {course.lessons.slice(0, 3).map((lesson, index) => (
-                      <li key={index}>{lesson}</li>
+                      <li key={index}>{lesson.title}</li>
                     ))}
                     {course.lessons.length > 3 && <li>...and more</li>}
                   </ul>
                   <button
-                    onClick={() => navigate("/home/courseDetails")}
+                    onClick={() =>
+                      navigate(`/home/courseContent/${course._id}`)
+                    }
                     className="lessonDetailBtn3"
                   >
                     View Course
@@ -113,4 +214,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default Enrolled;

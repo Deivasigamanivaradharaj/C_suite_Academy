@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import assets from "../assets/assets";
 import { auth } from "../../firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "@firebase/auth";
@@ -7,7 +7,7 @@ import { isStrongPassword, isValidEmail } from "../../utils/validityCheck";
 import { googlePopup } from "../../firebase/auth_google_popup";
 import { signinMicrosoft } from "../../firebase/auth_microsoft_execute";
 import { handleLinkedIn} from "../../firebase/auth_linkedIn_execute";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = ({ toggleSlide }) => {
@@ -16,6 +16,10 @@ const Login = ({ toggleSlide }) => {
   const [form, setForm] = useState({ email: null, password: null });
   const [error, setError] = useState({ email: false, password: false });
   const [showPassword, setShowPassword] = useState(false);
+
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const Courseid = params.get("courseid");
 
   const handleValueChange = (type, value, valid) => {
     setForm({ ...form, [type]: value });
@@ -92,7 +96,12 @@ const Login = ({ toggleSlide }) => {
             }
             else{
               setTimeout(() => {
-                navigate("../home");
+                if(Courseid){
+                  navigate("../home/courseDetails/"+Courseid);
+                }
+                else{
+                  navigate("../home");
+                }
               }, 5000);
             }
           }
@@ -115,7 +124,12 @@ const Login = ({ toggleSlide }) => {
       res = await googlePopup();
       if(res=="home"){
         setTimeout(() => {
+          if(Courseid){
+          navigate("../home/courseDetails/"+Courseid);
+        }
+        else{
           navigate("../home");
+        }
         }, 5000);
       }
       if(res=="quick-assessment"){

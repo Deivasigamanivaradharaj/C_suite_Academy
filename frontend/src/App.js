@@ -30,8 +30,8 @@ import Pricing from './PaymentPage/Pricing';
 
 import Dashboard from './Dashboard/Dashboard';
 import Home from './Dashboard/Components/Home/Home';
-// import Courses from './Dashboard/Components/Courses/Courses';
-import Courses from './LandingPage/Courses/Courses';
+import Courses from './Dashboard/Components/Courses/Courses';
+import CoursesLandingPage from './LandingPage/Courses/CoursesLandingPage';
 import Profile from './Dashboard/Components/Profile/Profile';
 import CourseContent from "./Dashboard/Components/CourseContent/CourseContent";
 import CourseDetails from "./Dashboard/Components/CourseDetails/CourseDetails";
@@ -59,22 +59,31 @@ function App() {
       <Router>
         <ToastContainer />
         <Routes>
-          <Route path="/" element={[<Landingpage/>,<Management/>,<Brands/>,<Success/>,<Engage/>,<Courses/>,<Partners/>,<FindPricing/>,<ContactUs/>,<Footer/>]}/>
+          <Route path="/" element={[<Landingpage/>,<Management/>,<Brands/>,<Success/>,<Engage/>,<CoursesLandingPage/>,<Partners/>,<FindPricing/>,<ContactUs/>,<Footer/>]}/>
+
           <Route path='/authentication' element={<Auth />}/>
           <Route path="reset-password" element={<ResetPage />} />
           <Route path="auth-linkedin-bridge" element={<LinkedInAuth />} />
+
           {/* <Route path="/authentication" element={<Authentication></Authentication>}></Route> */}
           <Route path="/quick-assessment" element={<Entrylevel/>}/>
           <Route path="/assessment-page" element={<Assessmentsstart/>}/>
           <Route path="/finish-assessment" element={<Closelevel/>}/>
+
           <Route path='/payment' element={<Pricing></Pricing>}></Route>
+
           <Route path='/home' element={<Dashboard/>}>
             <Route path='' index element={<Home/>}></Route>
             <Route path="courses" index element={<Courses />}></Route>
             <Route path="profile" index element={<Profile />}></Route>
             <Route path="enrolled" index element={<Enrolled />}></Route>
-            <Route path="test/:lessonId" index element={<TestPage />} />
+            {/* <Route path="test/:lessonId" index element={<TestPage />} /> */}
             <Route
+              path="tests/:testId/user/:userId"
+              // path="test/:courseTitle/:courseId/:lessonId"
+              element={<TestPage />}
+            />
+            {/* <Route
               path="courseContent"
               index
               element={<CourseContent />}
@@ -83,7 +92,9 @@ function App() {
               path="courseDetails"
               index
               element={<CourseDetails />}
-            ></Route>
+            ></Route> */}
+            <Route path="courseContent/:courseId" element={<CourseContent />} />
+            <Route path="courseDetails/:courseId" element={<CourseDetails />} />
           </Route>
           <Route path='/admin' element={<AllCourses/>}/>
           <Route path="/admin/Courses/new" element={<AddnewCourse />} />

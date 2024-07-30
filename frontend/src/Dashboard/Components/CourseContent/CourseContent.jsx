@@ -1,37 +1,161 @@
-import React, { useState } from "react";
-import Accordion from "react-bootstrap/Accordion";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./CourseContent.css";
-import { useNavigate } from "react-router-dom";
-import courseData from "../Assets/Data/CourseContentDetails.json";
-import testData from "../Assets/Data/TestData.json";
-import PersonIcon from "../Assets/SVG/PersonIcon.svg";
-import SettingsIcon from "../Assets/SVG/SettingsIcon.svg";
-import LogoutIcon from "../Assets/SVG/LogoutIcon.svg";
-import HomeIcon from "../Assets/SVG/HomeIcon.svg";
+import tick from "../Assets/SVG/tick.svg";
+import { useNavigate, useParams } from "react-router-dom";
+import LoadingPage from "../LoadingPage/LoadingPage";
+import Accordion from "react-bootstrap/Accordion";
+import ErrorDataFetchOverlay from "../Error/ErrorDataFetchOverlay";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
 const CourseContent = () => {
   const navigate = useNavigate();
-
+  const { courseId } = useParams();
+  const [userId, setUserId] = useState("");
+  const [courseData, setCourseData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchedID, setFetchedID] = useState(null);
+  const [fetchError, setFetchError] = useState(false);
   const [activeLesson, setActiveLesson] = useState(null);
-  const [activeLessonTab, setActiveLessonTab] = useState(null);
+  const [currentCourseData, setCurrentCourseData] = useState({});
+
+  // nxt btn
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(-1);
+  const [activeAccordion, setActiveAccordion] = useState(null);
+
+  // progress
+  const [completedExercises, setCompletedExercises] = useState(new Set());
+  const [watchedVideoTitles, setWatchedVideoTitles] = useState([]);
+
+  // api data
+  const [completedUserData, setCompletedUserData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+        const response = await axios.get(
+          `https://csuite-production.up.railway.app/api/courseDetail/${courseId}`
+        );
+        setCourseData(response.data);
+        // console.log(response.data.course);
+
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        if (userInfo && userInfo.userID) {
+          const { userID } = userInfo;
+          setUserId(userID);
+        } else {
+          setFetchError(true);
+        }
+
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Error fetching course details:", err);
+        setIsLoading(false);
+        setFetchError(true);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchCompletedVideos = async () => {
+      if (!userId) return;
+
+      try {
+        const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+        const response = await axios.get(
+          `https://csuite-production.up.railway.app/api/completevideo/${userId}/${courseId}`
+        );
+
+        const data = response.data.completedUserData;
+        // console.log("Fetched data:", data[0].completedVideos);
+        setCompletedUserData(data[0].completedVideos);
+
+        if (data.length > 0) {
+          const firstItem = data[0];
+          const completedTitles = firstItem.completedVideos;
+
+          // Initialize completedExercises
+          const completedSet = new Set(
+            firstItem.completedVideos.flatMap((videoTitle) =>
+              courseData.lessons.flatMap((lesson, lessonIndex) =>
+                lesson.chapter.flatMap((video, videoIndex) =>
+                  video.title === videoTitle
+                    ? [`${lessonIndex}-${videoIndex}`]
+                    : []
+                )
+              )
+            )
+          );
+          setCompletedExercises(completedSet);
+          setFetchedID(firstItem._id);
+          setWatchedVideoTitles(completedTitles);
+
+          // console.log("Completed video titles:", completedTitles);
+        } else {
+          console.log("No completed videos found.");
+          setCompletedUserData([]);
+          setWatchedVideoTitles([]);
+          setCompletedExercises(new Set());
+        }
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status === 404) {
+            // const message =
+            //   err.response.data.message ||
+            //   "No completed videos found. This might be normal.";
+            // console.log(message);
+            setCompletedUserData([]);
+            setWatchedVideoTitles([]);
+            setCompletedExercises(new Set());
+
+            try {
+              const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+              await axios.post(`https://csuite-production.up.railway.app/api/completevideo/`, {
+                userId,
+                courseId,
+                completedVideos: [],
+              });
+              // alert("posting in effect");
+              // console.log("New entry created with empty completed videos.");
+            } catch (postErr) {
+              console.error(
+                "Error creating new completed video entry:",
+                postErr
+              );
+            }
+          } else {
+            console.error(
+              "Error fetching completed videos:",
+              err.response.data.message || err.message || err
+            );
+          }
+        } else {
+          console.error("Error fetching completed videos:", err.message || err);
+        }
+      }
+    };
+
+    fetchCompletedVideos();
+  }, [userId, courseId]);
 
   const handleLessonClick = (index) => {
     setActiveLesson(index === activeLesson ? null : index);
+    setActiveAccordion(index === activeLesson ? null : index);
   };
-
-  const handleLessonClickTab = (index) => {
-    setActiveLessonTab(index === activeLessonTab ? null : index);
-  };
-
-  const [activeTab, setActiveTab] = useState("description");
 
   const calculateTotalDuration = (videos) => {
     let totalSeconds = 0;
-    videos.forEach((video) => {
-      const timeComponents = video.duration.split(":").map(Number);
-      totalSeconds += timeComponents[0] * 60 + timeComponents[1];
+    videos?.forEach((video) => {
+      if (video.duration) {
+        const timeComponents = video.duration.split(":").map(Number);
+        totalSeconds += timeComponents[0] * 60 + timeComponents[1];
+      }
     });
 
     const hours = Math.floor(totalSeconds / 3600);
@@ -46,273 +170,346 @@ const CourseContent = () => {
     return `${parseInt(minutes, 10)}m ${parseInt(seconds, 10)}s`;
   }
 
-  //
-  const findCourseTestData = (courseTitle) => {
-    return testData.courses.find((course) => course.title === courseTitle);
+  // currentcourse kkaaga ethu
+  const handleCurrentContent = async (data, lessonIndex, excerciseIndex) => {
+    const exerciseKey = `${lessonIndex}-${excerciseIndex}`;
+    // Update completedExercises set
+    setCompletedExercises((prev) => {
+      const updatedSet = new Set(prev);
+      updatedSet.add(exerciseKey);
+      // console.log("Updated completedExercises:", Array.from(updatedSet));
+      return updatedSet;
+    });
+
+    // Update watchedVideoTitles array
+    setWatchedVideoTitles((prevTitles) => {
+      const updatedTitles = new Set(prevTitles);
+      updatedTitles.add(data.title);
+      // console.log("Updated watchedVideoTitles:", Array.from(updatedTitles));
+      return Array.from(updatedTitles);
+    });
+
+    // Modify data and set current course data
+    const modifiedData = {
+      ...data,
+      excerciseNo: excerciseIndex + 1,
+      lessonNo: lessonIndex + 1,
+      type: data.type,
+      link: data.link,
+      duration: data.duration,
+    };
+    setCurrentCourseData(modifiedData);
+
+    // Update lesson and video indices
+    setCurrentLessonIndex(lessonIndex);
+    setCurrentVideoIndex(excerciseIndex);
+    setActiveAccordion(lessonIndex);
+
+    // console.log("Updating completed videos with data:", {
+    //   lesson: data.title,
+    // });
+
+    try {
+      const videoAlreadyCompleted = completedUserData.includes(data.title);
+
+      if (!videoAlreadyCompleted) {
+        const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
+        // Video already completed, update if necessary
+        await axios.put(
+          `https://csuite-production.up.railway.app/api/completevideo/${fetchedID}/updatelesson`,
+          { lesson: data.title }
+        );
+      }
+    } catch (err) {
+      console.error("Error handling current content:", err);
+    }
   };
+
+  const handleNext = async () => {
+    if (courseData.lessons) {
+      const currentLesson = courseData.lessons[currentLessonIndex];
+
+      if (currentLessonIndex === 0 && currentVideoIndex === -1) {
+        handleCurrentContent(currentLesson.chapter[0], currentLessonIndex, 0);
+      } else if (currentVideoIndex < currentLesson.chapter.length - 1) {
+        handleCurrentContent(
+          currentLesson.chapter[currentVideoIndex + 1],
+          currentLessonIndex,
+          currentVideoIndex + 1
+        );
+      } else if (currentLessonIndex < courseData.lessons.length - 1) {
+        const nextLesson = courseData.lessons[currentLessonIndex + 1];
+        handleCurrentContent(nextLesson.chapter[0], currentLessonIndex + 1, 0);
+      } else {
+        const totalExercises = courseData.lessons.reduce(
+          (total, lesson) => total + lesson.chapter.length,
+          0
+        );
+        if (completedExercises.size === totalExercises) {
+          alert("Congratulations! You have completed the course!");
+        } else {
+          alert("There are a few lessons you need to complete!");
+        }
+      }
+    }
+  };
+
+  const renderContent = (link, typeManual) => {
+    // if (link.type === "video") {
+    if (typeManual === "video") {
+      return (
+        <iframe
+          title={
+            !currentCourseData.title ? "Video Title" : currentCourseData.title
+          }
+          className="embed-responsive-item"
+          src={link}
+          allow="autoplay"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        ></iframe>
+      );
+    } else if (typeManual === "ppt") {
+      // const fileId = link.split("/d/")[1].split("/")[0];
+      const fileId =
+        "https://drive.google.com/file/d/11LZ9bwWvJMaOfTe-AMFLcbsjQeehXJbc/view"
+          .split("/d/")[1]
+          .split("/")[0];
+      const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      return (
+        <iframe
+          title="PPT"
+          sandbox="allow-same-origin allow-scripts"
+          className="embed-responsive-item"
+          src={embedUrl}
+          allowFullScreen
+        ></iframe>
+      );
+    } else if (typeManual === "audio") {
+      // const Nlink =
+      //   "https://drive.google.com/file/d/1o5fqu02l3u6vGVCC6BEhe4XZ9trfqVr7/view?usp=sharing";
+      // const audioURL = Nlink.split("/d/")[1].split("/")[0];
+      // const embedUrl = `https://drive.google.com/uc?export=download&id=${audioURL}`;
+      return (
+        <iframe
+          title="audio"
+          src="https://drive.google.com/file/d/1CqdN4fSdXF4pMFEzjcMH6dkxsrfqt5Oq/preview"
+          width="640"
+          height="480"
+          allow="autoplay"
+        ></iframe>
+      );
+    }
+  };
+
+  const calculateProgress = () => {
+    const totalExercises = courseData.lessons?.reduce(
+      (total, lesson) => total + lesson.chapter?.length,
+      0
+    );
+    const progress =
+      totalExercises > 0 ? (completedExercises.size / totalExercises) * 100 : 0;
+
+    return progress;
+  };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
+
+  if (isLoading) {
+    return (
+      <div>
+        <LoadingPage />
+      </div>
+    );
+  }
+
+  if (fetchError) {
+    return <ErrorDataFetchOverlay />;
+  }
 
   return (
     <div className="courseContentContainer">
-      <div className="row firstRow hideClassForXS">
-        <div className="TopBar col-8 ">
-          {/* 
-           <button className="row firstRowBtn" onClick={() => navigate(-1)}>
-            <span>&larr;</span>&nbsp;&nbsp;Back
+      <div className="row firstRow g-0">
+        <div className="courseContentHeader">
+          <button className="BackBtn" onClick={() => navigate(-1)}>
+            Back
           </button>
-          <div className="row firstRowHeadingBox">
-            <div className="courseHeading col-10">{courseData.title}</div>
-            <button className="col-2">
-              Next video &nbsp; <span>&#5171;</span>
-            </button>
-          </div> */}
-          <div className="TopBar">
-            <button className="BackBtn" onClick={() => navigate(-1)}>
-              Back
-            </button>
+          <div className="courseHeading">
+            {truncateText(courseData.title, 45)}
           </div>
-          <div className="TitleBar">{courseData.title}</div>
-          <div className=" TopBar">
-            <button className="BackBtn">Next</button>
-          </div>
-        </div>
-        <div className="col-4 settingTab">
-          <div className="MenuBarIcons">
-            <img src={HomeIcon} alt="" />
-            <p>Home</p>
-          </div>
-          <div className="MenuBarIcons">
-            <img src={PersonIcon} alt="" />
-            <p>Profile</p>
-          </div>
-          <div className="MenuBarIcons">
-            <img src={SettingsIcon} alt="" />
-            <p>Settings</p>
-          </div>
-          <div className="MenuBarIcons">
-            <img src={LogoutIcon} alt="" />
-            <p>Logout</p>
-          </div>
-        </div>
-      </div>
-      <div className="row firstRow showClassForXS g-0">
-        <div className="btnRows">
-          <button className="firstRowBtn" onClick={() => navigate(-1)}>
-            Go Back
+          <button className="NextBtn" onClick={() => handleNext()}>
+            Next
           </button>
-          <button className="firstRowBtn">Next Video</button>
         </div>
-
-        <div className="courseHeading">{courseData.title}</div>
+        <div className="courseContentProgressBar">
+          <ProgressBar progress={calculateProgress()} />
+        </div>{" "}
       </div>
       <div className="row secondRow">
         <div className="col-md-8 pdy">
           <div className="videoBox">
-            <div className="embed-responsive embed-responsive-16by9 mb-4">
-              <iframe
-                title="title"
-                className="embed-responsive-item"
-                src="https://www.youtube.com/embed/Zj6x_7i1jYY"
-                allowFullScreen
-              ></iframe>
+            <div className="embed-responsive embed-responsive-16by9">
+              {courseData?.lessons.length > 0 &&
+                renderContent(
+                  !currentCourseData.link
+                    ? courseData.videoUrl === "http://yourvideo.url"
+                      ? "https://player.vimeo.com/video/988747921?title=0&byline=0&portrait=0&sidedock=0"
+                      : courseData.videoUrl
+                    : currentCourseData.link === "#"
+                    ? "https://player.vimeo.com/video/988747921?title=0&byline=0&portrait=0&sidedock=0"
+                    : currentCourseData.link,
+                  // !currentCourseData.type ? "video" : "audio"
+                  currentCourseData.type ? currentCourseData.type : "video"
+                )}
             </div>
             <div>
               <div className="infoBox">
-                <h1 className="my-2">{courseData.title}</h1>
-                <div className="lessonDescriptionBox my-3">
-                  <h3 className="lessonDescriptionBoxTitle my-2">
-                    1. {courseData.lessons[0].title}
-                  </h3>
-                  <p className="lessonDescriptionBoxDescription">
-                    {courseData.lessons[0].description}
-                  </p>
-                </div>
+                <h1>{courseData.title}</h1>
+                {courseData.lessons && courseData.lessons.length > 0 && (
+                  <div className="lessonDescriptionBox">
+                    <h3 className="lessonDescriptionBoxTitle">
+                      {!currentCourseData.title
+                        ? ""
+                        : `${currentCourseData.lessonNo}.${currentCourseData.excerciseNo}`}{" "}
+                      {!currentCourseData.title
+                        ? courseData.lessons[0].title
+                        : currentCourseData.title}
+                      {/* {courseData.lessons[0].title} */}
+                    </h3>
+                    <p className="lessonDescriptionBoxDescription">
+                      {!currentCourseData.notes
+                        ? courseData.lessons[0].description
+                        : currentCourseData.notes}
+                      {/* {courseData.lessons[0].description} */}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-
-          {/* <div className="CDtabBox CCbgColor">
-            <Tabs
-              id="course-content-tabs"
-              activeKey={activeTab}
-              onSelect={(k) => setActiveTab(k)}
-            >
-              <Tab
-                eventKey="description"
-                title="Description"
-                className="CDtabBoxDesc"
-              >
-                <p>{courseData.description}</p>
-              </Tab>
-              <Tab eventKey="lessons" title="Lessons">
-                <div className="CDAccordianBox">
-                  <Accordion
-                    activeKey={activeLessonTab}
-                    onSelect={handleLessonClickTab}
-                  >
-                    {courseData.lessons.map((lesson, index) => (
-                      <Accordion.Item key={index} eventKey={index}>
-                        <Accordion.Header>
-                          <div className="CDlesson-meta">
-                            <div className="CDlesson-title">
-                              {index + 1}. {lesson.title}
-                            </div>
-                            <span className="CDlesson-duration">
-                              Duration: {calculateTotalDuration(lesson.videos)}
-                            </span>
-                            <span className="">
-                              &nbsp;/&nbsp; Total Videos: {lesson.videos.length}
-                            </span>
-                          </div>
-                        </Accordion.Header>
-                        <Accordion.Body>
-                          <div>
-                            <ul className="list-group">
-                              {lesson.videos.map((video, vidIndex) => (
-                                <li key={vidIndex} className="list-group-item">
-                                  <span className="video-number">
-                                    <a href={video.link}>
-                                      {`${index + 1}.${vidIndex + 1}`}{" "}
-                                      {video.title}
-                                    </a>
-                                  </span>
-                                  <span className="lesson-duration">
-                                    Duration: {video.duration}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                            {findCourseTestData(courseData.title)?.lessons[
-                              index
-                            ]?.isTestAvailable && (
-                              <div className="testButtonBox">
-                                Take a Test to Confirm Your Understanding{" "}
-                                <div>
-                                  <div>
-                                    <span>
-                                      Total questions:{" "}
-                                      {
-                                        findCourseTestData(courseData.title)
-                                          ?.lessons[index]?.questions.length
-                                      }
-                                    </span>
-                                    <span>
-                                      Time Limit:{" "}
-                                      {findCourseTestData(courseData.title)
-                                        ?.lessons[index]?.timeLimit ??
-                                        "Not specified"}
-                                    </span>
-                                  </div>
-                                  <button
-                                    className="testButton"
-                                    onClick={() =>
-                                      navigate(`/home/test/${index + 1}`)
-                                    }
-                                  >
-                                    Take Test
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    ))}
-                  </Accordion>
-                </div>
-              </Tab>
-              <Tab
-                eventKey="overview"
-                title="Overview"
-                className="CDtabBoxOverV"
-              >
-                {courseData.overviewPoints.map((point, index) => (
-                  <div key={index}>
-                    <h5>{point.heading}</h5>
-                    <p>{point.content}</p>
-                  </div>
-                ))}{" "}
-              </Tab>
-            </Tabs>
-          </div> */}
         </div>
-        <div className="col-md-4  accordianBox">
-          <Accordion
-            activeKey={activeLesson}
-            onSelect={handleLessonClick}
-            alwaysOpen
-          >
-            {courseData.lessons.map((lesson, index) => (
-              <div key={index} className="accordion-item">
-                <Accordion.Item eventKey={index}>
-                  <Accordion.Header style={{width:"100%"}} onClick={() => handleLessonClick(index)}>
-                    <div className="lesson-meta">
-                      <div className="lesson-title">
-                        {index + 1}&nbsp;.&nbsp;
-                        {lesson.title}
-                      </div>
-                      <span className="lesson-duration">
-                        Duration : {calculateTotalDuration(lesson.videos)}
-                      </span>
-                      <span className="">
-                        &nbsp; /&nbsp; Total Videos : {lesson.videos.length}
-                      </span>
-                    </div>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <div>
-                      <ul className="list-group">
-                        {lesson.videos.map((video, vidIndex) => (
-                          <li key={vidIndex} className="list-group-item">
-                            <span className="video-number">
-                              <a href={video.link}>
-                                {`${index + 1}.${vidIndex + 1}`}&nbsp;
-                                {video.title}
-                              </a>
-                            </span>
-                            <span className="lesson-duration">
-                              Duration :{" "}
-                              {convertToReadableDuration(video.duration)}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                      {findCourseTestData(courseData.title)?.lessons[index]
-                        ?.isTestAvailable && (
-                        <div className="testButtonBox">
-                          Take a Test to Confirm Your Understanding{" "}
+        <div className="col-md-4 CCaccordianBox">
+          <Accordion activeKey={activeAccordion} onSelect={handleLessonClick}>
+            {courseData?.lessons &&
+              courseData.lessons?.map((lesson, index) => {
+                const lessonCompleted = lesson.chapter?.every((_, vidIndex) =>
+                  completedExercises.has(`${index}-${vidIndex}`)
+                );
+
+                return (
+                  <Accordion.Item key={index} eventKey={index}>
+                    <Accordion.Header
+                      onClick={() => handleLessonClick(index)}
+                      className={
+                        !currentCourseData.title
+                          ? ""
+                          : `${
+                              currentCourseData.lessonNo === index + 1
+                                ? "accr-btn-active"
+                                : ""
+                            }`
+                      }
+                    >
+                      <div className="lesson-meta">
+                        <div className="lesson-title">
                           <div>
-                            <div>
-                              <span>
-                                Total questions:{" "}
-                                {
-                                  findCourseTestData(courseData.title)?.lessons[
-                                    index
-                                  ]?.questions.length
-                                }
-                              </span>
-                              <span>
-                                Time Limit:{" "}
-                                {findCourseTestData(courseData.title)?.lessons[
-                                  index
-                                ]?.timeLimit ?? "Not specified"}
-                              </span>
-                            </div>
-                            <button
-                              className="testButton"
+                            {index + 1}&nbsp;.&nbsp;{lesson.title}
+                          </div>
+
+                          {lessonCompleted && (
+                            <img
+                              className="content-watched"
+                              src={tick}
+                              alt="watched"
+                            />
+                          )}
+                        </div>
+                        <span className="lesson-duration">
+                          Duration : {calculateTotalDuration(lesson?.chapter)}{" "}
+                          &nbsp; /&nbsp;
+                        </span>
+
+                        <span>Total Videos : {lesson.chapter?.length}</span>
+                      </div>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div>
+                        <ul className="list-group">
+                          {lesson.chapter?.map((video, vidIndex) => (
+                            <li
+                              key={vidIndex}
+                              className={`list-group-item 
+             ${
+               currentCourseData.title === video.title
+                 ? "list-group-item-active"
+                 : completedExercises.has(`${index}-${vidIndex}`)
+                 ? "completedLesson"
+                 : ""
+             }`}
                               onClick={() =>
-                                navigate(`/home/test/${index + 1}`)
+                                handleCurrentContent(video, index, vidIndex)
                               }
                             >
-                              Take Test
-                            </button>
+                              <span className="video-number">
+                                <a href={video.link}>
+                                  {`${index + 1}.${vidIndex + 1}`}&nbsp;
+                                  {video.title}
+                                </a>
+
+                                {completedExercises.has(
+                                  `${index}-${vidIndex}`
+                                ) && (
+                                  <img
+                                    className="content-watched"
+                                    src={tick}
+                                    alt="watched"
+                                  />
+                                )}
+                              </span>
+                              {video?.type === "video" ? (
+                                <span className="lesson-duration">
+                                  Duration :{" "}
+                                  {convertToReadableDuration(video.duration)}
+                                </span>
+                              ) : (
+                                <span className="lesson-duration">
+                                  Type : {video?.type}
+                                </span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                        {lesson.testId && (
+                          <div className="testButtonBox">
+                            <div className="testButtonInr">
+                              <div className="testButtonTxt">
+                                Take a Test to Confirm Your Understanding
+                              </div>
+
+                              <button
+                                className="testButton"
+                                onClick={() =>
+                                  navigate(
+                                    `/home/tests/${lesson.testId}/user/${userId}`
+                                  )
+                                }
+                              >
+                                Take Test
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </div>
-            ))}
+                        )}
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                );
+              })}
           </Accordion>
         </div>
       </div>

@@ -1,67 +1,61 @@
 .profileContainer {
   display: flex;
-  /* height: 100vh; */
-  padding: 40px 50px;
   cursor: default;
+  min-height: 100vh;
+  padding: 40px 50px;
   align-items: center;
   flex-direction: column;
   justify-content: center;
   background-color: var(--primary-bg);
 }
 
-.profileBanner {
+.profileBannerBox {
   width: 100%;
 }
 
 .profileBGBox {
   width: 100%;
-  height: 35vh;
   display: flex;
+  height: max-content;
+  max-height: 45vh;
   align-items: center;
-  justify-content: space-around;
-  background-image: url("../Assets/SVG/profileSVG.svg");
   border-radius: 15px;
-  background-size: cover;
-  background-color: var(--primary-dark);
-  background-repeat: no-repeat;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* .profileBGTxt {
-  background-color: rgb(255, 255, 255);
-} */
+.profileBGBox img {
+  width: 100%;
+  height: 35vh;
+  object-fit: cover;
+  border-radius: 15px;
+}
 
 .profileBGTxt h1,
 .profileBGTxt h6 {
-  /* position: relative; */
-  /* top: 35%; */
-  /* left: 10%; */
   color: white;
-  padding: 5px 15px;
   width: max-content;
+  padding: 5px 15px;
   margin-bottom: 0px;
   border-radius: 10px;
-  /* background-color: var(--primary-light); */
 }
 
 .profileBG {
   width: 225px;
   height: auto;
-  /* background-color: rgb(54, 67, 27); */
 }
 
 .profileHeader {
   display: flex;
-  /* background-color: brown; */
 }
 
 .profileImage {
-  /* flex: 3; */
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: yellowgreen; */
 }
 
 .profileImage img {
@@ -70,15 +64,14 @@
   left: 0%;
   width: 125px;
   height: 125px;
+  object-fit: cover;
   border-radius: 50%;
-  /* background-color: aqua; */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .profileHeaderInfo {
   flex: 5;
   padding-top: 5px;
-  /* background-color: skyblue; */
 }
 
 .profileName {
@@ -90,16 +83,14 @@
   display: flex;
   align-items: start;
   justify-content: center;
-  /* background-color: chartreuse; */
 }
 
 .profileEditBtn button {
-  /* display: block; */
   width: 50%;
   border: none;
-  padding: 5px 10px;
   color: white;
   margin-top: 10%;
+  padding: 5px 10px;
   border-radius: 5px;
   background-color: white;
   transition: all 0.3s ease;
@@ -117,7 +108,6 @@
   display: flex;
   align-items: start;
   justify-content: space-between;
-  /* background-color: rgb(71, 95, 0); */
 }
 
 .profileSection {
@@ -138,7 +128,6 @@
   display: flex;
   margin-bottom: 10px;
   justify-content: space-between;
-  /* background-color: lightsteelblue; */
 }
 
 .profileDetails label {
@@ -146,7 +135,6 @@
   color: gray;
   font-size: 0.9em;
   text-align: left;
-  /* font-weight: 500; */
 }
 
 .profileDetails input,
@@ -157,7 +145,36 @@
   font-size: 0.9em;
   font-weight: 500;
   text-align: right;
-  background-color: transparent;
+  padding-right: 5px;
+  border-radius: 5px;
+  /* background-color: transparent; */
+  background-color: rgba(220, 220, 220, 0.41);
+}
+
+.error-border input,
+.error-border textarea {
+  border-radius: 8px;
+  border: 1px solid red;
+  transform: translateX(0);
+  animation: borderAnimation 0.25s ease-in-out;
+}
+
+@keyframes borderAnimation {
+  0% {
+    transform: translateX(0%);
+  }
+  25% {
+    transform: translateX(-2%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  75% {
+    transform: translateX(2%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 .profileSPLBox {
@@ -169,22 +186,77 @@
 .profileSPLBox label {
   margin-top: 1.5%;
   margin-left: 10px;
-  /* background-color: red; */
+}
+
+.profileSPLBox input {
+  background-color: transparent;
 }
 
 .profileSeperator {
   height: 15px;
 }
 
+.imageBannerUpload {
+  background-color: red;
+}
+
+.imageUpload,
+.imageBannerUpload {
+  display: none;
+  transition: all 0.3s;
+}
+
+.custom-file-upload {
+  flex: 1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px 8px;
+  width: max-content;
+  margin: 0px 10px;
+  text-align: center;
+  border-radius: 5px;
+  transition: all 0.3s;
+  display: inline-block;
+  background-color: var(--primary-dark);
+}
+
+.imageBanner {
+  margin: 10px 0;
+}
+
+.custom-file-upload:hover {
+  background-color: var(--primary-light);
+}
+
 @media (max-width: 1125px) {
   .profileContainer {
-    padding: 12px 18px;
+    min-height: 100vh;
+    padding: 20px 30px;
+    justify-content: flex-start;
+  }
+
+  .profileBGBox img {
+    height: 210px;
+  }
+
+  .profileSection {
+    width: 45%;
+  }
+}
+
+@media (max-width: 835px) {
+  .profileContainer {
     height: auto;
+    padding: 12px 18px;
   }
 
   .profileBGBox {
+    min-height: 100px;
+  }
+
+  .profileBGBox img {
     height: 100px;
-    /* background-color: blue; */
   }
 
   .profileBG {
@@ -192,8 +264,8 @@
   }
 
   .profileBGTxt h1 {
-    padding: 2.5px 5px;
     font-size: small;
+    padding: 2.5px 5px;
   }
 
   .profileBGTxt h6 {
@@ -202,9 +274,9 @@
   }
 
   .profileImage img {
+    left: 5px;
     width: 50px;
     height: 50px;
-    left: 5px;
   }
 
   .profileHeaderInfo {
@@ -227,48 +299,39 @@
     font-size: x-small;
   }
 
-  /*  */
-
   .profileContent {
-    flex-direction: column;
     align-items: center;
-    /* background-color: red; */
+    flex-direction: column;
   }
 
   .profileSection {
     width: 100%;
-    padding: 12px 12px 0px 12px;
     margin-bottom: 15px;
-    /* background-color: rebeccapurple; */
+    padding: 12px 12px 0px 12px;
   }
 
   .profileSection h5 {
     font-weight: 500;
     font-size: small;
     margin-bottom: 10px;
-    /* background-color: aquamarine; */
   }
 
   .profileDetails label {
     width: 35%;
     color: gray;
+    text-align: left;
     font-size: 0.55em;
     margin-bottom: 0px;
-    text-align: left;
-    /* background-color: aqua; */
-    /* font-weight: 500; */
   }
 
   .profileDetails input,
   .profileDetails textarea {
     font-size: 0.55em;
-    /* background-color: red; */
   }
 
   .profileSPLBox {
     padding: 2.5px;
     border-radius: 15px;
-    /* background-color: #f3e6ffdb; */
   }
 
   .profileSPLBox img {
@@ -282,7 +345,6 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    /* background-color: red; */
   }
 
   .profileSPLBox input {
@@ -293,5 +355,16 @@
 
   .profileSeperator {
     height: 0px;
+  }
+
+  .custom-file-upload {
+    margin: 0px;
+    font-size: 8px;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+
+  .imageBanner {
+    margin: 3px 0;
   }
 }
