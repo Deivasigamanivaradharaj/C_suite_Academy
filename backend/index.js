@@ -150,7 +150,7 @@ app.post('/create-checkout-session', async (req, res)=>{
   line_items: item,
   mode: "payment",
   success_url: `https://csuite-academy.netlify.app/home/courseDetails/`+req.body.id+`?status=sucess`,
-  cancel_url: `https://csuite-academy.netlify.apphome/courseDetails/`+req.body.id+`?status=failed`
+  cancel_url: `https://csuite-academy.netlify.app/home/courseDetails/`+req.body.id+`?status=failed`
   })
 
   res.json({id:session.id})
