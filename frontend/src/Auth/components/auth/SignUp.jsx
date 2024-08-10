@@ -90,14 +90,14 @@ const SignUp = ({ toggleSlide }) => {
       // }
       let data =  {name:form?.name, email:form?.email, linkedin:form?.LinkedIn, password:form?.password };
       try {
-        const response = await axios.get('https://c-suite-academy-2.onrender.com/check', {
+        const response = await axios.get('https://csuite-production.up.railway.app/api/user/check', {
           params: {
             email: form?.email,
           },});
         console.log(response.data);
         if(response.data=="null"){
           try {
-            const response = await axios.post('https://c-suite-academy-2.onrender.com/signup', data, {
+            const response = await axios.post('https://csuite-production.up.railway.app/api/user/signup', data, {
               headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
             });
             console.log(response.data);

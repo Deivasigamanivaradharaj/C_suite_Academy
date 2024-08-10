@@ -38,14 +38,14 @@ export const googlePopup = async () => {
 
 async function adduser(name, email){
   try {
-    const response = await axios.get('https://c-suite-academy-2.onrender.com/check', {
+    const response = await axios.get('https://csuite-production.up.railway.app/api/user/check', {
       params: {
         email: email,
       },});
     if(response.data=="null"){
       let data =  {name:name, email:email, linkedin:null, password:null };
       try {
-        const response = await axios.post('https://c-suite-academy-2.onrender.com/signup', data, {
+        const response = await axios.post('https://csuite-production.up.railway.app/api/user/signup', data, {
           headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
         });
         console.log(response.data);

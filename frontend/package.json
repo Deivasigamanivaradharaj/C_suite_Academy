@@ -21,6 +21,7 @@
     "html2canvas": "^1.4.1",
     "js-confetti": "^0.12.0",
     "jspdf": "^2.5.1",
+    "lmsproject": "file:",
     "nodemailer": "^6.9.14",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.3",

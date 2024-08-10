@@ -31,7 +31,7 @@ const Entrylevel = () => {
       
         async function fetchela(){
           try {
-            const response = await axios.get('https://c-suite-academy-2.onrender.com/fetchela');
+            const response = await fetchela();
             // console.log(JSON.parse(response.data))
             // console.log(questionData)
             var data = JSON.parse(response.data);

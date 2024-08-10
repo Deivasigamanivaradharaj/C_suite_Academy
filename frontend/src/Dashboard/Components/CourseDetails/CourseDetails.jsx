@@ -1,6 +1,6 @@
 import "./CourseDetails.css";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import { Tabs, Tab, Accordion } from "react-bootstrap";
@@ -23,7 +23,14 @@ const CourseDetails = () => {
   const [fetchError, setFetchError] = useState(false);
   const courseDetailIcon = ["📘", "👥", "⏰", "🎓", "🌐", "🔑"];
 
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const status = params.get("status");
+
   useEffect(() => {
+
+    setPaymentSuccess(status==="success"? true : false || false)
+
     const fetchData = async () => {
       try {
         const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
@@ -59,7 +66,7 @@ const CourseDetails = () => {
       const stripe = await loadStripe("pk_test_51PUVZZRrG0ZkGYrr3y8s7r35TsoywTtRefCFB64KvnZNuuU2kotNOBp8AOZMPfyejU5Ah1DG4vXjwyig9AZXFmNv00Etljhki6");
       let data = {name:name,id:id, price:price}
 
-      const response = await axios.post("https://sunshine-1.onrender.com/create-checkout-session",data, {
+      const response = await axios.post("https://csuite-production.up.railway.app/api/payment/create-checkout-session",data, {
         headers: { 'Content-Type': 'application/json' }, // Set Content-Type header
       })
 

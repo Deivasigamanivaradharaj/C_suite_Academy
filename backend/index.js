@@ -1,164 +1,60 @@
 const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose');
+const cors = require('cors');
+ 
+
+const connectionString = "mongodb+srv://sarandatabase:saran%40143@mycluster.zm3yrdt.mongodb.net/demo?retryWrites=true&w=majority&appName=MyCluster";
 const app = express();
-var cors = require("cors")
-const bodyParser = require('body-parser');
-const multer = require("multer")
-const port = 3030; // You can choose any port
-const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = "mongodb+srv://deivasigamani:XZzuy3gbZYwnQgWY@cluster0.lmjggi8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const uri = "mongodb+srv://deivasigamani:jg7EZVUDiNPQM9ue@cluster0.nbpwxda.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
-  const stripe = require("stripe")("sk_test_51PUVZZRrG0ZkGYrrIq8xX3O1fcIQ4xrvYmHRM9m6oFSNjEZL0AcRnLmnAx7ZORfMLH0UwqEDQGlcFlfv7Hm7JJoN00nHLBHIxq")
 
-app.use(cors())
-app.use(bodyParser.json());
+// Enable CORS
+app.use(cors());
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+// Models
+const Contact = require('./models/Contact.model');
+// const CourseList = require('./models/CourseList.model');
 
-app.get('/check', (req,res)=>{
 
-    async function fetch(){
-      try{
-        await client.connect();
-  
-          const db = client.db("C-suite");
-          const col = db.collection("Users");
-  
-          const filter = { "email": req.query.email };
-          col.findOne(filter).then((document)=>{
-          res.json(JSON.stringify(document));
-    })
-      }catch (err) {
-        console.log(err.stack);
-    }
-  }
-  fetch().catch(console.dir);
-    
-  })
+// Routers
 
-app.get('/fetchela', (req,res)=>{
+const contactRouter = require('./routes/Contact.router')
 
-  async function fetch(){
-    try{
-      await client.connect();
+const courseDetailsRouter = require('./routes/CourseDetails.router')
+const userRouter = require('./routes/User.router')
+const paymentRouter = require('./routes/Payment.router')
+const calenderRouter = require('./routes/Calender.router')
+const testRouter = require('./routes/Test.router');
 
-        const db = client.db("C-suite");
-        const col = db.collection("ELA");
+const UploadDriveRouter = require('./routes/UploadToDrive.router')
+const UploadVimeoRouter = require('./routes/UploadToVimeo.router')
+const CompleteVideo = require('./routes/CompletedVideo.router')
 
-        col.findOne().then((document)=>{
-        res.json(JSON.stringify(document));
-  })
-    }catch (err) {
-      console.log(err.stack);
-  }
-}
-fetch().catch(console.dir);
-  
-})
+// app.use(bodyParser.json)
 
-app.get('/login', (req,res)=>{
+app.use('/api/contact', contactRouter)
 
-  async function fetch(){
-    try{
-      await client.connect();
+app.use('/api/courseDetail', courseDetailsRouter)
+app.use('/api/user', userRouter)
+app.use('/api/payment', paymentRouter)
+app.use('/api/calender', calenderRouter)
+app.use('/api/tests', testRouter);
 
-        const db = client.db("C-suite");
-        const col = db.collection("Users");
+app.use('/api/uploadtodrive', UploadDriveRouter);
+app.use('/api/uploadtovimeo', UploadVimeoRouter);
+app.use('/api/completevideo', CompleteVideo);
 
-        const filter = { "email": req.query.email };
-        col.findOne(filter).then((document)=>{
-        res.json(JSON.stringify(document));
-  })
-    }catch (err) {
-      console.log(err.stack);
-  }
-}
-fetch().catch(console.dir);
-  
-})
-
-app.post('/signup', (req, res)=>{
-  console.log(req.body)
-  res.json({ message: 'Data received successfully!' });
-  async function run() {
-    try {
-        await client.connect();
-
-        const db = client.db("C-suite");
-        const col = db.collection("Users");
-        console.log("Successfully connected to Atlas");
-
-        const peopleDocuments = [
-          {
-            "name": req.body.name,
-            "email": req.body.email,
-            "linkedin":req.body.linkedin,
-            "password": req.body.password,
-            "type":"user",
-            "first-login":true,
-            "elacomplete":false,
-          },
-        ]
-
-        const p = await col.insertMany(peopleDocuments);
-    } catch (err) {
-        console.log(err.stack);
-    }
-    finally {
-        await client.close();
-    }
-  }
-  run().catch(console.dir);
-})
-
-app.post('/create-checkout-session', async (req, res)=>{
-
-  const item = [
-    {
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name:req.body.name,
-        },
-        unit_amount:Math.round(req.body.price*100),
-      },
-      quantity: 1, // Optional, defaults to 1
-    },
-    {
-      // Another item object with price_data and quantity
-    },
-  ];
-
-  const lineItems = {
-  price_data:{
-  currency: "usd",
-  product_data:{
-  name:req.body.name,
-  },
-  unit_amount:Math.round(req.body.price*100),
-  },
-  quantity: 1
-  }
-
-  const session = await stripe.checkout.sessions.create({
-  payment_method_types: ["card"],
-  line_items: item,
-  mode: "payment",
-  success_url: `https://csuite-academy.netlify.app/home/courseDetails/`+req.body.id+`?status=sucess`,
-  cancel_url: `https://csuite-academy.netlify.app/home/courseDetails/`+req.body.id+`?status=failed`
-  })
-
-  res.json({id:session.id})
-})
-
-app.listen(port, () => {
-  console.log(`Server is running on port number ${port}`);
+// Root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
 });
 
-
-
+// Db connection
+mongoose.connect(connectionString, {})
+  .then(() => {
+    app.listen(5000, () => {
+      console.log("Db connected - Listening port 5000");
+    });
+  })
+  .catch((e) => {
+    console.log(e);
+  });

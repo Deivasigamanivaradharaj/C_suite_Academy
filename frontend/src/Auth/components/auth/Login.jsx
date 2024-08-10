@@ -9,6 +9,7 @@ import { signinMicrosoft } from "../../firebase/auth_microsoft_execute";
 import { handleLinkedIn} from "../../firebase/auth_linkedIn_execute";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { check } from "../../../api/baseapi";
 
 const Login = ({ toggleSlide }) => {
 
@@ -27,6 +28,11 @@ const Login = ({ toggleSlide }) => {
     if (!valid && error[type] === false) setError({ ...error, [type]: true });
   };
 
+  const [formData, setFormData] = useState({
+    email:"",
+    password:""
+  });
+
   const handleLogin = async () => {
     const newError = {};
     if (!isValidEmail(form.email)) {
@@ -39,83 +45,101 @@ const Login = ({ toggleSlide }) => {
       setError(newError);
       return;
     }
-    // try {
-    //   const response = await axios.post(
-    //     "https://quiz-project-d15l.onrender.com/api/login/",
-    //     {
-    //       email: form.email,
-    //       password: form.password,
-    //     }
-    //   );
-    //   console.log(response);
-    //   toast.success("Login Success");
-    //   // Navigate to another page or save the token
-    //   navigate("/dashboard");
-    // } catch (err) {
-    //   console.log(err);
-    //   toast.error("Login Failed");
-    // }
-    // try {
-    //   const response = await signInWithEmailAndPassword(
-    //     auth,
-    //     form.email,
-    //     form.password
-    //   );
-    //   console.log(response);
-    //   toast.success("Login Success");
-    //   setTimeout(() => {
-    //     navigate("../home");
-    //   }, 5000);
-
-    // } catch (err) {
-    //   console.log(err);
-    //   toast.error("Login Failed");
-    // }
+    setFormData({
+      email:form.email,
+      password:form.password
+    })
     try {
-      const response = await axios.get('https://c-suite-academy-2.onrender.com/check', {
-        params: {
-          email: form.email,
-        },});
-      if(response.data=="null"){
-        toast.error("Account not found!");
+      const res = await check(formData);
+      if(res.status==200 && !res.data.success){
+        // toast.error("Account not found!");
+        console.log(res)
       }
       else{
-        if(JSON.parse(response.data).password==form.password){
-          toast.success("Login Successfull!");
-          if(JSON.parse(response.data).type=="user"){
-            localStorage.setItem("isloggedin", true);
-            localStorage.setItem("userid", JSON.parse(response.data)._id);
-            localStorage.setItem("name", JSON.parse(response.data).name);
-            localStorage.setItem("email", JSON.parse(response.data).email);
-            localStorage.setItem("linkedin", JSON.parse(response.data).linkedin);
-            localStorage.setItem("elacomplete", JSON.parse(response.data).elacomplete);
-            if(JSON.parse(response.data).elacomplete==false){
-              setTimeout(() => {
-                navigate("../quick-assessment");
-              }, 5000);
-            }
-            else{
-              setTimeout(() => {
-                if(Courseid){
-                  navigate("../home/courseDetails/"+Courseid);
-                }
-                else{
-                  navigate("../home");
-                }
-              }, 5000);
-            }
-          }
-          else{
-            toast.success("not a user?");
-          }
-        }
-        else{
-          toast.error("Check Your Password!");
-        }
+        console.log(res)
       }
+      // else{
+      //   if(response.data.password==form.password){
+      //     toast.success("Login Successfull!");
+      //     if(JSON.parse(response.data).type=="user"){
+      //       localStorage.setItem("isloggedin", true);
+      //       localStorage.setItem("userid", JSON.parse(response.data)._id);
+      //       localStorage.setItem("name", JSON.parse(response.data).name);
+      //       localStorage.setItem("email", JSON.parse(response.data).email);
+      //       localStorage.setItem("linkedin", JSON.parse(response.data).linkedin);
+      //       localStorage.setItem("elacomplete", JSON.parse(response.data).elacomplete);
+      //       if(JSON.parse(response.data).elacomplete==false){
+      //         setTimeout(() => {
+      //           navigate("../quick-assessment");
+      //         }, 5000);
+      //       }
+      //       else{
+      //         setTimeout(() => {
+      //           if(Courseid){
+      //             navigate("../home/courseDetails/"+Courseid);
+      //           }
+      //           else{
+      //             navigate("../home");
+      //           }
+      //         }, 5000);
+      //       }
+      //     }
+      //     else{
+      //       toast.success("not a user?");
+      //     }
+      //   }
+      //   else{
+      //     toast.error("Check Your Password!");
+      //   }
+      // }
     } catch (error) {
-      console.error(error); // Handle errors
+      console.log(error);
     }
+    // try {
+    //   const response = await axios.get('https://csuite-production.up.railway.app/api/user/check', {
+    //     params: {
+    //       email: form.email,
+    //     },});
+    //   if(response.data=="null"){
+    //     toast.error("Account not found!");
+    //   }
+    //   else{
+    //     if(JSON.parse(response.data).password==form.password){
+    //       toast.success("Login Successfull!");
+    //       if(JSON.parse(response.data).type=="user"){
+    //         localStorage.setItem("isloggedin", true);
+    //         localStorage.setItem("userid", JSON.parse(response.data)._id);
+    //         localStorage.setItem("name", JSON.parse(response.data).name);
+    //         localStorage.setItem("email", JSON.parse(response.data).email);
+    //         localStorage.setItem("linkedin", JSON.parse(response.data).linkedin);
+    //         localStorage.setItem("elacomplete", JSON.parse(response.data).elacomplete);
+    //         if(JSON.parse(response.data).elacomplete==false){
+    //           setTimeout(() => {
+    //             navigate("../quick-assessment");
+    //           }, 5000);
+    //         }
+    //         else{
+    //           setTimeout(() => {
+    //             if(Courseid){
+    //               navigate("../home/courseDetails/"+Courseid);
+    //             }
+    //             else{
+    //               navigate("../home");
+    //             }
+    //           }, 5000);
+    //         }
+    //       }
+    //       else{
+    //         toast.success("not a user?");
+    //       }
+    //     }
+    //     else{
+    //       toast.error("Check Your Password!");
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.error(error); // Handle errors
+    // }
   };
 
   const handleSocialLogin = async (type) => {
